@@ -1,0 +1,4 @@
+.idea
+.vscode
+*.dev.user.js
+node_modules
