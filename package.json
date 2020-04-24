@@ -22,7 +22,6 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "version": "npm run build && git add .",
     "anylize": "cross-env npm_config_report=true npm run build",
     "build": "webpack --mode production --config config/webpack.config.production.js",
     "dev": "webpack --mode development --config config/webpack.config.dev.js"
