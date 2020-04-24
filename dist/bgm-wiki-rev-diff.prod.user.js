@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name        bgm-wiki-rev-diff
 // @namespace   https://trim21.me/
-// @version     0.0.1
+// @version     0.0.2
 // @author      Trim21 <i@trim21.me>
 // @source      https://github.com/Trim21/bgm-wiki-rev-diff
 // @license     MIT
-// @match       https://bgm.tv/subject/*/edit*
+// @match       https://bgm.tv/subject/*/edit
+// @match       https://bangumi.tv/subject/*/edit
 // @require     https://cdn.jsdelivr.net/npm/jquery@^3.5.0/dist/jquery.min.js
 // @grant       GM_xmlhttpRequest
 // @connect     bgm.tv
