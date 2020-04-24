@@ -59,7 +59,7 @@ function compare (revs) {
       lineterm: ''
     })
     const rendered = render(d.join('\n'), {})
-    $('#columnInSubjectA').prepend(rendered)
+    show(rendered)
   })
 }
 
@@ -102,6 +102,16 @@ function getRevInfo (revID) {
 
 function render (diff) {
   return Diff2Html.html(diff)
+}
+
+function show (html) {
+  const el = $('#show-trim21-cn')
+  if (el.length) {
+    el.html(html)
+  } else {
+    $('#columnInSubjectA').prepend('<div id=show-trim21-cn></dev>')
+    show(html)
+  }
 }
 
 main()
