@@ -8,7 +8,8 @@ module.exports = {
   source: pkg.repository.url,
   license: 'MIT',
   match: [
-    'https://bgm.tv/subject/*/edit*'
+    'https://bgm.tv/subject/*/edit',
+    'https://bangumi.tv/subject/*/edit'
   ],
   require: [
     `https://cdn.jsdelivr.net/npm/jquery@${pkg.dependencies.jquery}/dist/jquery.min.js`,
