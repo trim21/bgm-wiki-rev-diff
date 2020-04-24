@@ -1,0 +1,30 @@
+name: ci
+
+on: ['push', 'pull_request']
+
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 13.x]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - uses: actions/cache@v1
+        with:
+          path: ./node_modules
+          key: node-${{ hashFiles('package-lock.json') }}
+
+      - run: npm ci
+        if: steps.cache-primes.outputs.cache-hit != 'true'
+
+      - run: npm run lint
+
+      - run: npm run build
