@@ -31,17 +31,17 @@
     "url": "https://github.com/Trim21/bgm-wiki-rev-diff"
   },
   "dependencies": {
-    "diff2html": "^3.1.6",
-    "difflib": "^0.2.4",
-    "jquery": "^3.5.0"
+    "diff2html": "3.1.6",
+    "difflib": "0.2.4",
+    "jquery": "3.5.0"
   },
   "devDependencies": {
     "cross-env": "7.0.2",
     "eslint": "6.8.0",
     "eslint-config-standard": "14.1.1",
     "eslint-loader": "4.0.0",
-    "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-import": "2.20.2",
+    "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.1",
     "userscript-metadata-webpack-plugin": "0.0.3",
