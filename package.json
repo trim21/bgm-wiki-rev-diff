@@ -44,7 +44,7 @@
     "eslint-plugin-standard": "4.0.1",
     "ts-loader": "7.0.1",
     "typescript": "3.8.3",
-    "userscript-metadata-webpack-plugin": "0.0.3",
+    "userscript-metadata-webpack-plugin": "0.0.6",
     "webpack": "4.43.0",
     "webpack-bundle-analyzer": "3.7.0",
     "webpack-cli": "3.3.11",
