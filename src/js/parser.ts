@@ -40,7 +40,6 @@ function getRevs (): Rev[] {
 export function getRevInfo (revID: string): Rev {
   for (const rev of getRevs()) {
     if (rev.id === revID) {
-      console.log(revID, rev)
       return rev
     }
   }

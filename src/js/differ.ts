@@ -34,6 +34,9 @@ function infoDiff (rev1: Comment, rev2: Comment): string {
 }
 
 function descriptionDiff (rev1: Comment, rev2: Comment): string {
+  if (rev1.details.description === rev2.details.description) {
+    return ''
+  }
   return Diff.createTwoFilesPatch(
     'description',
     'description',

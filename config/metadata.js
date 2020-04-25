@@ -13,12 +13,15 @@ module.exports = {
   ],
   require: [
     `https://cdn.jsdelivr.net/npm/jquery@${pkg.dependencies.jquery}/dist/jquery.min.js`,
+    `https://cdn.jsdelivr.net/npm/diff2html@${pkg.dependencies.diff2html}/bundles/js/diff2html.min.js`,
+    `https://cdn.jsdelivr.net/npm/diff@${pkg.dependencies.diff}/dist/diff.min.js`,
   ],
   grant: [
     'GM_xmlhttpRequest'
   ],
   connect: [
-    'bgm.tv'
+    'bgm.tv',
+    'bangumi.tv'
   ],
   'run-at': 'document-end'
 }

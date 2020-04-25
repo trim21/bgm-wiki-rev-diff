@@ -5,9 +5,6 @@ const webpackConfig = {
   resolve: {
     extensions: ['.js', '.ts']
   },
-  // performance: {
-  // hints: false
-  // },
   optimization: {
     minimize: false
   },
@@ -17,8 +14,8 @@ const webpackConfig = {
   },
   externals: {
     jquery: '$',
-    axios: 'axios',
-    'axios-userscript-adapter': 'axiosGmxhrAdapter'
+    'diff2html': 'Diff2Html',
+    'diff': 'Diff',
   },
   module: {
     rules: [
