@@ -4,10 +4,10 @@ on:
   push:
     branches-ignore:
       - gh-pages
-  pull_request:
-  create:
+      - "renovate/**"
     tags:
-      - v*
+      - "v*"
+  pull_request:
 
 jobs:
   main:
