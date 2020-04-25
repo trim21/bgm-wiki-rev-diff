@@ -1,13 +1,8 @@
 {
   "extends": [
-    "schedule:monthly",
-    ":masterIssue",
-    "config:base"
+    "github>Trim21/renovate-config"
   ],
   "prHourlyLimit": 6,
-  "lockFileMaintenance": {
-    "enabled": true
-  },
   "packageRules": [
     {
       "groupName": "deps-prod",
