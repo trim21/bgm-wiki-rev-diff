@@ -3,4 +3,4 @@
 ![](https://tva3.sinaimg.cn/large/bd69bf14ly1ge5ieirs8bj20ld0jqgp0.jpg)
 
 
-install: <https://greasyfork.org/zh-CN/scripts/401921-bgm-wiki-rev-diff>
+install: <https://greasyfork.org/zh-CN/scripts/401921-bgm-wiki-rev-differ>

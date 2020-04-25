@@ -2,11 +2,8 @@ const path = require('path')
 const webpack = require('webpack')
 
 const webpackConfig = {
-  node: {
-    Buffer: false
-  },
   resolve: {
-    extensions: ['.js']
+    extensions: ['.js', '.ts']
   },
   // performance: {
   // hints: false
@@ -26,9 +23,9 @@ const webpackConfig = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.ts$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader'
+        loader: 'ts-loader'
       }
     ]
   },

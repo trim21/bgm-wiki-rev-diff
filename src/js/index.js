@@ -1,24 +1,25 @@
-import * as diffLib from 'difflib'
-import * as Diff2Html from 'diff2html'
 import * as $ from 'jquery'
-import { request } from './utils'
+import { parseRevEl } from './parser'
+import { compare } from './compare'
 
 function main () {
-  console.log('start bgm wiki rev diff UserScript')
+  console.log('start bgm wiki rev differ UserScript')
   initUI()
 }
 
 function initUI () {
+  $('#columnInSubjectA').prepend('<div id=show-trim21-cn></dev>')
   $('#pagehistory li').each(function () {
     const el = $(this)
     const rev = parseRevEl(el)
     el.prepend(`<input type="checkbox" class="rev-trim21-cn" name="rev" label="select to compare" value="${rev.id}">`)
   })
   $('#columnInSubjectA span.text').append('<a href="#;" id="compare-trim21-cn" tar class="l"> > 比较选中的版本</a>')
-  $('#compare-trim21-cn').click(function () {
+  $('#compare-trim21-cn').on('click', function () {
     const selectedRevs = getSelectedVersion()
-    compare(selectedRevs)
+    compare(selectedRevs[0], selectedRevs[1])
   })
+  $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />')
 }
 
 function getSelectedVersion () {
@@ -36,82 +37,6 @@ function getSelectedVersion () {
   })
   selectedVersion.reverse()
   return selectedVersion
-}
-
-function compare (revs) {
-  console.log('compare')
-  $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />')
-  const rev1 = getRevInfo(revs[0])
-  const rev2 = getRevInfo(revs[1])
-  const p1 = request(rev1.url)
-  const p2 = request(rev2.url)
-  Promise.all([p1, p2]).then(values => {
-    const contents = []
-    for (const page of values) {
-      const jq = $(page.responseText)
-      contents.push(jq.find('#subject_infobox').val())
-    }
-    const d = diffLib.unifiedDiff(contents[0].split('\n'), contents[1].split('\n'), {
-      fromfile: rev1.comment,
-      tofile: rev2.comment,
-      fromfiledate: rev1.date,
-      tofiledate: rev2.date,
-      lineterm: ''
-    })
-    const rendered = render(d.join('\n'), {})
-    show(rendered)
-  })
-}
-
-function getRevs () {
-  const revs = []
-  $('#pagehistory li').each(function () {
-    const el = $(this)
-    revs.push(parseRevEl(el))
-  })
-  return revs
-}
-
-function parseRevEl (el) {
-  const date = el.find('a').first().html()
-  const revEL = el.find('a.l:contains("恢复")')
-  const revCommentEl = el.find('span.comment')
-  let comment = ''
-  if (revCommentEl.length) {
-    comment = revCommentEl.html()
-    comment = comment.substring(1, comment.length - 1)
-  }
-  const revHref = revEL.attr('href')
-  const revID = revHref.split('/').pop()
-  return {
-    id: revID,
-    comment,
-    date,
-    url: revHref,
-  }
-}
-
-function getRevInfo (revID) {
-  for (const rev of getRevs()) {
-    if (rev.id === revID) {
-      console.log(revID, rev)
-      return rev
-    }
-  }
-}
-
-function render (diff) {
-  return Diff2Html.html(diff)
-}
-
-function show (html) {
-  const el = $('#show-trim21-cn')
-  if (el.length) {
-    el.html(html)
-  } else {
-    $('#columnInSubjectA').prepend('<div id=show-trim21-cn></dev>')
-    show(html)
-  }
 }
 
 main()
