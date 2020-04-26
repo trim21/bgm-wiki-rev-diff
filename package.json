@@ -18,8 +18,8 @@
     "lint": "eslint src/**",
     "anylize": "cross-env npm_config_report=true npm run build",
     "postversion": "git push",
-    "build": "webpack --mode production --config config/webpack.config.production.js",
-    "dev": "webpack --mode development --config config/webpack.config.dev.js"
+    "build": "webpack --config config/webpack.config.production.js",
+    "dev": "webpack --config config/webpack.config.dev.js"
   },
   "repository": {
     "type": "git",

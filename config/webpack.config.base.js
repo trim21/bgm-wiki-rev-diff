@@ -14,8 +14,8 @@ const webpackConfig = {
   },
   externals: {
     jquery: '$',
-    'diff2html': 'Diff2Html',
-    'diff': 'Diff',
+    diff2html: 'Diff2Html',
+    diff: 'Diff',
   },
   module: {
     rules: [
