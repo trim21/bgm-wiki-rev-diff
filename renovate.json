@@ -6,14 +6,9 @@
   "prHourlyLimit": 6,
   "packageRules": [
     {
-      "groupName": "deps-prod",
+      "groupName": "dependencies",
       "depTypeList": [
-        "dependencies"
-      ]
-    },
-    {
-      "groupName": "deps-dev",
-      "depTypeList": [
+        "dependencies",
         "devDependencies"
       ]
     }
