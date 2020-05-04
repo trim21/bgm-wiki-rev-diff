@@ -1,16 +1,5 @@
 {
   "extends": [
-    "github>Trim21/renovate-config:monthly",
-    "github>Trim21/renovate-config"
-  ],
-  "prHourlyLimit": 6,
-  "packageRules": [
-    {
-      "groupName": "dependencies",
-      "depTypeList": [
-        "dependencies",
-        "devDependencies"
-      ]
-    }
+    "github>Trim21/renovate-config:js-app"
   ]
 }
