@@ -4,5 +4,6 @@
     "@trim21:js",
     "@trim21:app",
     "@trim21:monthly"
-  ]
+  ],
+   "updateNotScheduled": false
 }
