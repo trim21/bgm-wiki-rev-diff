@@ -6,6 +6,7 @@ module.exports = {
   version: pkg.version,
   author: pkg.author,
   source: pkg.repository.url,
+  supportURL: pkg.repository.url + '/issues',
   license: 'MIT',
   match: [
     'https://bgm.tv/subject/*/edit',
