@@ -3,14 +3,14 @@ const webpack = require('webpack')
 
 const webpackConfig = {
   resolve: {
-    extensions: ['.js', '.ts']
+    extensions: ['.js', '.ts'],
   },
   optimization: {
-    minimize: false
+    minimize: false,
   },
   entry: './src/js/index.js',
   output: {
-    path: path.resolve(__dirname, '../dist')
+    path: path.resolve(__dirname, '../dist'),
   },
   externals: {
     jquery: '$',
@@ -22,13 +22,11 @@ const webpackConfig = {
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        loader: 'ts-loader'
-      }
-    ]
+        loader: 'ts-loader',
+      },
+    ],
   },
-  plugins: [
-    new webpack.HashedModuleIdsPlugin()
-  ]
+  plugins: [new webpack.HashedModuleIdsPlugin()],
 }
 
 module.exports = webpackConfig

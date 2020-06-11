@@ -10,7 +10,7 @@ module.exports = {
   license: 'MIT',
   match: [
     'https://bgm.tv/subject/*/edit',
-    'https://bangumi.tv/subject/*/edit'
+    'https://bangumi.tv/subject/*/edit',
   ],
   require: [
     `https://cdn.jsdelivr.net/npm/jquery@${pkg.dependencies.jquery}/dist/jquery.min.js`,
@@ -18,11 +18,11 @@ module.exports = {
     `https://cdn.jsdelivr.net/npm/diff@${pkg.dependencies.diff}/dist/diff.min.js`,
   ],
   grant: [
-    'GM_xmlhttpRequest'
+    'GM_xmlhttpRequest',
   ],
   connect: [
     'bgm.tv',
-    'bangumi.tv'
+    'bangumi.tv',
   ],
-  'run-at': 'document-end'
+  'run-at': 'document-end',
 }

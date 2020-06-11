@@ -1,7 +1,8 @@
 const merge = require('webpack-merge')
 const TerserPlugin = require('terser-webpack-plugin')
 const UserScriptMetaDataPlugin = require('userscript-metadata-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin
 
 const metadata = require('./metadata')
 const webpackConfig = require('./webpack.config.base')
@@ -19,13 +20,13 @@ const cfg = merge({}, webpackConfig, {
     ],
   },
   output: {
-    filename: metadata.name + '.prod.user.js'
+    filename: metadata.name + '.prod.user.js',
   },
   plugins: [
     new UserScriptMetaDataPlugin({
-      metadata
-    })
-  ]
+      metadata,
+    }),
+  ],
 })
 
 if (process.env.npm_config_report) {
