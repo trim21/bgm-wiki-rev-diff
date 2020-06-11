@@ -15,7 +15,8 @@
     "dist/*.js"
   ],
   "scripts": {
-    "lint": "eslint src/**",
+    "lint": "eslint src/**/*.js src/**/*.ts",
+    "format": "eslint src/**/*.js src/**/*.ts --fix",
     "anylize": "cross-env npm_config_report=true npm run build",
     "postversion": "git push",
     "build": "webpack --config config/webpack.config.production.js",

@@ -11,8 +11,11 @@ function initUI () {
   $('#columnInSubjectA').prepend('<div id=show-trim21-cn></dev>')
   $('#pagehistory li').each(function () {
     const el = $(this)
-    const rev = parseRevEl(el)
-    el.prepend(`<input type="checkbox" class="rev-trim21-cn" name="rev" label="select to compare" value="${rev.id}">`)
+    try {
+      const rev = parseRevEl(el)
+      el.prepend(`<input type="checkbox" class="rev-trim21-cn" name="rev" label="select to compare" value="${rev.id}">`)
+    } catch (e) {
+    }
   })
   $('#columnInSubjectA span.text').append('<a href="#;" id="compare-trim21-cn" tar class="l"> > 比较选中的版本</a>')
   $('#compare-trim21-cn').on('click', function () {

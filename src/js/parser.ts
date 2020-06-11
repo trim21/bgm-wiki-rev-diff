@@ -32,7 +32,10 @@ function getRevs (): Rev[] {
   const revs: Rev[] = []
   $('#pagehistory li').each(function () {
     const el = $(this)
-    revs.push(parseRevEl(el))
+    try {
+      revs.push(parseRevEl(el))
+    } catch (e) {
+    }
   })
   return revs
 }
