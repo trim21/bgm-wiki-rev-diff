@@ -1,4 +1,4 @@
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const TerserPlugin = require('terser-webpack-plugin')
 const UserScriptMetaDataPlugin = require('userscript-metadata-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
