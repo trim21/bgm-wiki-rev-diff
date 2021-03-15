@@ -1,7 +1,7 @@
 {
   "name": "bgm-wiki-rev-diff",
   "description": "Build your UserScript with webpack",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "private": true,
   "author": {
     "name": "Trim21",
