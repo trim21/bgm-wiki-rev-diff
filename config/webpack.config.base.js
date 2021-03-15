@@ -7,6 +7,7 @@ const webpackConfig = {
   },
   optimization: {
     minimize: false,
+    moduleIds: 'deterministic',
   },
   entry: './src/js/index.js',
   output: {
@@ -26,7 +27,6 @@ const webpackConfig = {
       },
     ],
   },
-  plugins: [new webpack.HashedModuleIdsPlugin()],
 }
 
 module.exports = webpackConfig
