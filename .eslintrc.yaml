@@ -17,10 +17,25 @@ parserOptions:
   sourceType: module
   ecmaVersion: 6
 
+overrides:
+  - files: ["*.ts"]
+    globals:
+      JQuery: true
+
+env:
+  jquery: true
+  browser: true
+
 rules:
-  comma-dangle: off
-  #  "import/order": ["error", {"groups": ["index", "sibling", "parent", "internal", "external", "builtin"]}]
-  "import/order": "error"
+  comma-dangle: "off"
+  "import/order":
+    [
+      "error",
+      {
+        "groups":
+          ["builtin", "external", "internal", "parent", "index", "sibling"],
+      },
+    ]
   "import/no-unused-modules": [1, { "unusedExports": true }]
   "no-unused-vars": "off"
   "@typescript-eslint/no-unused-vars": ["error"]

@@ -1,11 +1,10 @@
 const path = require('path')
+
 const { merge } = require('webpack-merge')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin
 const UserScriptMetaDataPlugin = require('userscript-metadata-webpack-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
-const metadata = require('./metadata')
 
+const metadata = require('./metadata')
 const webpackConfig = require('./webpack.config.base')
 
 const output = {
@@ -40,9 +39,5 @@ const cfg = merge(webpackConfig, {
     }),
   ],
 })
-
-if (process.env.npm_config_report) {
-  cfg.plugins.push(new BundleAnalyzerPlugin())
-}
 
 module.exports = cfg
