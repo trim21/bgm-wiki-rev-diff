@@ -6,7 +6,7 @@ const webpackConfig = {
   },
   optimization: {
     minimize: false,
-    moduleIds: 'deterministic',
+    moduleIds: 'named',
   },
   entry: './src/js/index.js',
   output: {
