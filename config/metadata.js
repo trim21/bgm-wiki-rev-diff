@@ -24,7 +24,6 @@ module.exports = {
     `https://cdn.jsdelivr.net/npm/axios@${dependencies.axios}/dist/axios.min.js`,
     `https://cdn.jsdelivr.net/npm/diff@${dependencies.diff}/dist/diff.min.js`,
   ],
-  grant: ['GM.xmlHttpRequest'],
   connect: [
     'bgm.tv',
     'bangumi.tv',
