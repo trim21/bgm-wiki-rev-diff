@@ -14,7 +14,7 @@ export function compare (revID1: string, revID2: string): void {
   Promise.all([p1, p2]).then(values => {
     const contents = []
     for (const page of values) {
-      contents.push(parseRevDetails(page.responseText))
+      contents.push(parseRevDetails(page))
     }
     const c1 = new Comment(rev1, contents[0])
     const c2 = new Comment(rev2, contents[1])

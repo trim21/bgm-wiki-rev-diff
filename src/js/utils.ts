@@ -1,14 +1,6 @@
-function request (url: string): Promise<{ responseText: string }> {
-  return new Promise((resolve) => {
-    // @ts-ignore
-    window.GM_xmlhttpRequest({
-      url,
-      // @ts-ignore
-      onload: function ({ responseText, }) {
-        resolve({ responseText })
-      }
-    })
-  })
-}
+import axios from 'axios'
 
-export { request }
+export async function request (url: string): Promise<string> {
+  const res = await axios.get<string>(url)
+  return res.data
+}
