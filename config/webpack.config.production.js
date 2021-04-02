@@ -1,7 +1,6 @@
 const { merge } = require('webpack-merge')
 const UserScriptMetaDataPlugin = require('userscript-metadata-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 const metadata = require('./metadata')
 const webpackConfig = require('./webpack.config.base')
