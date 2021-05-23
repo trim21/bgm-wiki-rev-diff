@@ -9,6 +9,9 @@ export function compare(revID1: string, revID2: string): void {
   show('<h2>loading versions...</h2>');
   const rev1 = getRevInfo(revID1);
   const rev2 = getRevInfo(revID2);
+  if (!(rev1 && rev2)) {
+    throw new Error(`error finding ${revID1}, ${revID2}`);
+  }
   const p1 = request(rev1.url);
   const p2 = request(rev2.url);
 

@@ -8,7 +8,7 @@ export function parseRevDetails(html: string): RevDetail {
   const title = jq.find('input[name="subject_title"]').val()?.toString() ?? '';
   const description =
     jq.find('textarea#subject_summary').val()?.toString() ?? '';
-  return new RevDetail(title, rawInfo, description);
+  return { title, rawInfo, description };
 }
 
 export function parseRevEl(el: JQuery): Rev {
@@ -25,6 +25,9 @@ export function parseRevEl(el: JQuery): Rev {
     throw new Error();
   }
   const revID = revHref.split('/').pop();
+  if (!revID) {
+    throw new Error(`can't parse rev id from ${revHref}`);
+  }
   return {
     id: revID,
     comment,

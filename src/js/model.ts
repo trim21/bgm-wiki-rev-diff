@@ -1,16 +1,10 @@
-export class RevDetail {
+export interface RevDetail {
   title: string;
   rawInfo: string;
   description: string;
-
-  constructor(title: string, rawInfo: string, description: string) {
-    this.title = title;
-    this.rawInfo = rawInfo;
-    this.description = description;
-  }
 }
 
-export class Rev {
+export interface Rev {
   id: string;
   comment: string;
   date: string;
