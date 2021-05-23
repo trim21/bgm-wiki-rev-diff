@@ -3,12 +3,12 @@ import * as $ from 'jquery';
 import { parseRevEl } from './parser';
 import { compare } from './compare';
 
-function main() {
+async function main(): Promise<void> {
   console.log('start bgm wiki rev differ UserScript');
-  initUI();
+  await initUI();
 }
 
-function initUI() {
+async function initUI(): Promise<void> {
   $('#columnInSubjectA').prepend('<div id=show-trim21-cn></dev>');
   $('#pagehistory li').each(function () {
     const el = $(this);
@@ -31,8 +31,8 @@ function initUI() {
   );
 }
 
-function getSelectedVersion() {
-  const selectedVersion = [];
+function getSelectedVersion(): string[] {
+  const selectedVersion: string[] = [];
   const selectedRev = $('.rev-trim21-cn:checked');
   if (selectedRev.length < 2) {
     window.alert('请选中两个版本进行比较');
@@ -41,11 +41,11 @@ function getSelectedVersion() {
     window.alert('只能比较两个版本');
   }
   selectedRev.each(function () {
-    const el = $(this);
-    selectedVersion.push(el.val());
+    const val = $(this).val() as string;
+    selectedVersion.push(val);
   });
   selectedVersion.reverse();
   return selectedVersion;
 }
 
-main();
+main().catch(console.error);

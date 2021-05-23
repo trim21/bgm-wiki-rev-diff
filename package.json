@@ -21,7 +21,7 @@
     "lint:prettier": "npm run prettier -- --check",
     "format:eslint": "npm run lint:eslint -- --fix",
     "format:prettier": "npm run prettier -- --write",
-    "prettier": "prettier \"{,!(node_modules)/**/}*.{cjs,js,ts,yaml,yml,json}\"",
+    "prettier": " prettier .",
     "anylize": "cross-env npm_config_report=true npm run build",
     "postversion": "git push",
     "build": "webpack --config config/webpack.config.production.js",

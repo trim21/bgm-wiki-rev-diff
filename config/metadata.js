@@ -14,7 +14,10 @@ module.exports = {
   source: repository.url,
   supportURL: repository.url + '/issues',
   license: 'MIT',
-  match: ['https://bgm.tv/subject/*/edit', 'https://bangumi.tv/subject/*/edit'],
+  match: [
+    'https://bgm.tv/subject/*/edit*',
+    'https://bangumi.tv/subject/*/edit*',
+  ],
   require: [
     `https://cdn.jsdelivr.net/npm/jquery@${dependencies.jquery}/dist/jquery.min.js`,
     `https://cdn.jsdelivr.net/npm/diff2html@${dependencies.diff2html}/bundles/js/diff2html.min.js`,

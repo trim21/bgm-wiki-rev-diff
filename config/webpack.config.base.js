@@ -8,7 +8,7 @@ const webpackConfig = {
     minimize: false,
     moduleIds: 'named',
   },
-  entry: './src/js/index.js',
+  entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, '../dist'),
   },
