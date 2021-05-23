@@ -4,7 +4,7 @@ import { parseRevEl } from './parser';
 import { compare } from './compare';
 
 async function main(): Promise<void> {
-  console.log('start bgm wiki rev differ UserScript');
+  console.log('start bgm-wiki-rev-diff UserScript');
   await initUI();
 }
 
