@@ -1,19 +1,19 @@
-const path = require('path')
+const path = require('path');
 
-const { merge } = require('webpack-merge')
-const UserScriptMetaDataPlugin = require('userscript-metadata-webpack-plugin')
-const LiveReloadPlugin = require('webpack-livereload-plugin')
+const { merge } = require('webpack-merge');
+const UserScriptMetaDataPlugin = require('userscript-metadata-webpack-plugin');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 
-const metadata = require('./metadata')
-const webpackConfig = require('./webpack.config.base')
+const metadata = require('./metadata');
+const webpackConfig = require('./webpack.config.base');
 
 const output = {
   filename: metadata.name + '.prod.user.js',
-}
+};
 
 metadata.require.push(
   'file://' + path.resolve(__dirname, '../dist', output.filename)
-)
+);
 
 const cfg = merge(webpackConfig, {
   mode: 'development',
@@ -38,6 +38,6 @@ const cfg = merge(webpackConfig, {
       metadata,
     }),
   ],
-})
+});
 
-module.exports = cfg
+module.exports = cfg;

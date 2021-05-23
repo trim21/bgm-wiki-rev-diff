@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('path');
 
 const webpackConfig = {
   resolve: {
@@ -26,6 +26,6 @@ const webpackConfig = {
       },
     ],
   },
-}
+};
 
-module.exports = webpackConfig
+module.exports = webpackConfig;

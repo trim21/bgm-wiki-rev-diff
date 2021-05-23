@@ -4,9 +4,9 @@ on:
   push:
     branches-ignore:
       - gh-pages
-      - "renovate/**"
+      - 'renovate/**'
     tags:
-      - "v*"
+      - 'v*'
   pull_request:
 
 jobs:
