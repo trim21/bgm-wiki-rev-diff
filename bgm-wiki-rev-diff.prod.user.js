@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         bgm-wiki-rev-diff
 // @namespace    https://trim21.me/
-// @version      0.0.18
+// @version      0.0.19
 // @author       Trim21 <i@trim21.me>
 // @source       https://github.com/Trim21/bgm-wiki-rev-diff
 // @supportURL   https://github.com/Trim21/bgm-wiki-rev-diff/issues
@@ -9,7 +9,7 @@
 // @match        https://bgm.tv/subject/*/edit*
 // @match        https://bangumi.tv/subject/*/edit*
 // @require      https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js
-// @require      https://cdn.jsdelivr.net/npm/diff2html@3.4.4/bundles/js/diff2html.min.js
+// @require      https://cdn.jsdelivr.net/npm/diff2html@3.4.5/bundles/js/diff2html.min.js
 // @require      https://cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js
 // @require      https://cdn.jsdelivr.net/npm/diff@5.0.0/dist/diff.min.js
 // @connect      bgm.tv
@@ -1869,7 +1869,7 @@ const parser_1 = __webpack_require__("./src/parser.ts");
 const compare_1 = __webpack_require__("./src/compare.ts");
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('start bgm wiki rev differ UserScript');
+        console.log('start bgm-wiki-rev-diff UserScript');
         yield initUI();
     });
 }
