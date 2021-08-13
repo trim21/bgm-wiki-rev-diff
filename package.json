@@ -25,6 +25,7 @@
     "postversion": "git push",
     "build": "webpack --config config/webpack.config.production.js",
     "dev": "webpack --config config/webpack.config.dev.js",
+    "lint-staged": "lint-staged -v",
     "prepare": "husky install"
   },
   "repository": {
