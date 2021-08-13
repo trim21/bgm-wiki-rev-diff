@@ -26,14 +26,14 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ./node_modules
-          key: node-${{ hashFiles('package-lock.json') }}
+          key: node-${{ matrix.node-version }}-${{ hashFiles('yarn.lock') }}
 
-      - run: npm ci
+      - run: yarn
         if: steps.cache-primes.outputs.cache-hit != 'true'
 
-      - run: npm run lint
+      - run: yarn lint
 
-      - run: npm run build
+      - run: yarn build
 
       - name: Preview
         if: ${{ (matrix.node-version == '14') && (github.ref == 'refs/heads/master') }}
@@ -60,12 +60,12 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ./node_modules
-          key: node-${{ hashFiles('package-lock.json') }}
+          key: node-14-${{ hashFiles('yarn.lock') }}
 
-      - run: npm ci
+      - run: yarn
         if: steps.cache-primes.outputs.cache-hit != 'true'
 
-      - run: npm run build
+      - run: yarn build
 
       - run: |
           sudo apt-get install tree -y
