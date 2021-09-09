@@ -9,18 +9,34 @@ async function main(): Promise<void> {
 }
 
 async function initUI(): Promise<void> {
-  $('#columnInSubjectA').prepend('<div id=show-trim21-cn></dev>');
-  $('#pagehistory li').each(function () {
+  $('#columnInSubjectA').prepend('<div id="show-trim21-cn"></dev>');
+  const revs = $('#pagehistory li').map(function (e) {
+    return parseRevEl($(this)).id;
+  });
+
+  $('#pagehistory li').each(function (index) {
     const el = $(this);
     try {
       const rev = parseRevEl(el);
       el.prepend(
         `<input type="checkbox" class="rev-trim21-cn" name="rev" label="select to compare" value="${rev.id}">`
       );
+
+      el.prepend(
+        `(<a href="#" data-rev="${rev.id}" data-previous="${
+          revs[index + 1]
+        }" class="l compare-previous-trim21-cn">show diff</a>) `
+      );
     } catch (e) {}
   });
+
+  $('.compare-previous-trim21-cn').on('click', function () {
+    const el = $(this);
+    compare(el.data('rev').toString(), el.data('previous').toString());
+  });
+
   $('#columnInSubjectA span.text').append(
-    '<a href="#;" id="compare-trim21-cn" tar class="l"> > 比较选中的版本</a>'
+    '<a href="#" id="compare-trim21-cn" tar class="l"> > 比较选中的版本</a>'
   );
   $('#compare-trim21-cn').on('click', function () {
     const selectedRevs = getSelectedVersion();
@@ -44,7 +60,7 @@ function getSelectedVersion(): string[] {
     const val = $(this).val() as string;
     selectedVersion.push(val);
   });
-  selectedVersion.reverse();
+  selectedVersion.sort((a, b) => parseInt(b) - parseInt(a));
   return selectedVersion;
 }
 
