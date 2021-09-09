@@ -33,7 +33,6 @@
     "url": "https://github.com/Trim21/bgm-wiki-rev-diff"
   },
   "dependencies": {
-    "axios": "0.21.1",
     "diff": "5.0.0",
     "diff2html": "3.4.9",
     "jquery": "3.6.0"
