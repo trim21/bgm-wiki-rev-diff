@@ -2,7 +2,7 @@
 // @name         bgm-wiki-rev-diff
 // @name:zh      显示条目信息版本差异
 // @namespace    https://trim21.me/
-// @version      0.1.1
+// @version      0.1.2
 // @author       Trim21 <i@trim21.me>
 // @source       https://github.com/Trim21/bgm-wiki-rev-diff
 // @supportURL   https://github.com/Trim21/bgm-wiki-rev-diff/issues
@@ -178,7 +178,7 @@ function initUI() {
                 el.prepend(`<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${rev.id}">`);
                 el.prepend(`<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${rev.id}">`);
                 const previous = revs[index + 1];
-                el.prepend(`(<a href="#" data-rev="${rev.id}" data-previous="${previous}" class="l compare-previous-trim21-cn">show diff</a>) `);
+                el.prepend(`(<a href="#" data-rev="${rev.id}" data-previous="${previous}" class="l compare-previous-trim21-cn">显示修改</a>) `);
             }
             catch (e) { }
         });
