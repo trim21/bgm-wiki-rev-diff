@@ -1,7 +1,7 @@
 import { getRevInfo, parseRevDetails } from './parser';
 import { diff } from './differ';
 import { clear, render, show } from './ui';
-import { Comment as Commit, Rev } from './model';
+import { Commit, Rev } from './model';
 
 export function compare(revID1: string, revID2: string): void {
   clear();
@@ -25,13 +25,29 @@ export function compare(revID1: string, revID2: string): void {
     });
 }
 
+const _cache: Record<string, Commit> = {};
+
 async function fetchRev(rev: Rev | undefined): Promise<Commit> {
   if (!rev) {
     return new Commit(
-      { id: '0', comment: '', date: '', url: '' },
-      { title: '', rawInfo: '', description: '' }
+      {
+        id: '0',
+        comment: '',
+        date: '',
+        url: '',
+      },
+      {
+        title: '',
+        rawInfo: '',
+        description: '',
+      }
     );
   }
-  const res = await fetch(rev.url);
-  return new Commit(rev, parseRevDetails(await res.text()));
+
+  if (!_cache[rev.id]) {
+    const res = await fetch(rev.url);
+    _cache[rev.id] = new Commit(rev, parseRevDetails(await res.text()));
+  }
+
+  return _cache[rev.id];
 }

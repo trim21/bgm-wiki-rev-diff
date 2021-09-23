@@ -12,7 +12,7 @@ export function parseRevDetails(html: string): RevDetail {
 }
 
 export function parseRevEl(el: JQuery): Rev {
-  const date = el.find('a').first().html();
+  const date = el.find('a:not(.compare-previous-trim21-cn)').first().html();
   const revEL = el.find('a.l:contains("恢复")');
   const revCommentEl = el.find('span.comment');
   let comment = '';

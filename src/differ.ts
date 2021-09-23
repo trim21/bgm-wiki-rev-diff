@@ -1,21 +1,27 @@
 import * as Diff from 'diff';
 
-import { Comment } from './model';
+import { Commit } from './model';
 
-export function diff(rev1: Comment, rev2: Comment): string {
-  return `${titleDiff(rev1, rev2)}\n${infoDiff(rev1, rev2)}\n${descriptionDiff(
-    rev1,
-    rev2
-  )}`;
+export function diff(revOld: Commit, revNew: Commit): string {
+  console.log(revOld);
+  console.log(revNew);
+  const d = [
+    titleDiff(revOld, revNew),
+    infoDiff(revOld, revNew),
+    descriptionDiff(revOld, revNew),
+  ].join('\n');
+
+  console.log(d);
+
+  return d;
 }
 
-function titleDiff(rev1: Comment, rev2: Comment): string {
+function titleDiff(rev1: Commit, rev2: Commit): string {
   if (rev1.details.title === rev2.details.title) {
     return '';
   }
-  return Diff.createTwoFilesPatch(
-    'title',
-    'title',
+  return Diff.createPatch(
+    '条目名',
     rev1.details.title,
     rev2.details.title,
     rev1.rev.date,
@@ -23,13 +29,12 @@ function titleDiff(rev1: Comment, rev2: Comment): string {
   );
 }
 
-function infoDiff(rev1: Comment, rev2: Comment): string {
+function infoDiff(rev1: Commit, rev2: Commit): string {
   if (rev1.details.rawInfo === rev2.details.rawInfo) {
     return '';
   }
-  return Diff.createTwoFilesPatch(
-    'info',
-    'info',
+  return Diff.createPatch(
+    '相关信息',
     rev1.details.rawInfo,
     rev2.details.rawInfo,
     rev1.rev.date,
@@ -37,13 +42,12 @@ function infoDiff(rev1: Comment, rev2: Comment): string {
   );
 }
 
-function descriptionDiff(rev1: Comment, rev2: Comment): string {
+function descriptionDiff(rev1: Commit, rev2: Commit): string {
   if (rev1.details.description === rev2.details.description) {
     return '';
   }
-  return Diff.createTwoFilesPatch(
-    'description',
-    'description',
+  return Diff.createPatch(
+    '简介',
     rev1.details.description,
     rev2.details.description,
     rev1.rev.date,

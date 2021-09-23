@@ -8,6 +8,7 @@ const {
 
 module.exports = {
   name: name,
+  'name:zh': '显示条目信息版本差异',
   namespace: 'https://trim21.me/',
   version: version,
   author: author,
@@ -17,6 +18,7 @@ module.exports = {
   match: [
     'https://bgm.tv/subject/*/edit*',
     'https://bangumi.tv/subject/*/edit*',
+    'https://chii.in/subject/*/edit*',
   ],
   require: [
     `https://cdn.jsdelivr.net/npm/jquery@${dependencies.jquery}/dist/jquery.min.js`,

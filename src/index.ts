@@ -8,8 +8,23 @@ async function main(): Promise<void> {
   await initUI();
 }
 
+const style = `
+<style>
+#show-trim21-cn .d2h-code-line {
+  width: calc(100% - 8em);
+  padding-right: 0;
+}
+
+#show-trim21-cn .d2h-code-line-ctn {
+  width: calc(100% - 8em);
+}
+</style>
+`;
+
 async function initUI(): Promise<void> {
-  $('#columnInSubjectA').prepend('<div id="show-trim21-cn"></dev>');
+  $('#columnInSubjectA > hr.board').after(
+    style + '<div id="show-trim21-cn"></div>'
+  );
   const revs = $('#pagehistory li').map(function (e) {
     return parseRevEl($(this)).id;
   });
@@ -19,24 +34,59 @@ async function initUI(): Promise<void> {
     try {
       const rev = parseRevEl(el);
       el.prepend(
-        `<input type="checkbox" class="rev-trim21-cn" name="rev" label="select to compare" value="${rev.id}">`
+        `<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${rev.id}">`
+      );
+      el.prepend(
+        `<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${rev.id}">`
       );
 
+      const previous = revs[index + 1];
+
       el.prepend(
-        `(<a href="#" data-rev="${rev.id}" data-previous="${
-          revs[index + 1]
-        }" class="l compare-previous-trim21-cn">show diff</a>) `
+        `(<a href="#" data-rev="${rev.id}" data-previous="${previous}" class="l compare-previous-trim21-cn">show diff</a>) `
       );
     } catch (e) {}
   });
 
+  const typeRevert: Record<string, string> = {
+    'rev-left': 'rev-right',
+    'rev-right': 'rev-left',
+  };
+  $('input[type="radio"]').on('change', function (e) {
+    const name = e.target.getAttribute('name');
+    if (!name) {
+      return;
+    }
+    const selectName = typeRevert[name];
+    const rev = e.target.getAttribute('value');
+    if (rev) {
+      $(`input[name="${selectName}"][value="${rev}"]`).attr(
+        'disabled',
+        'disabled'
+      );
+      $(`input[name="${selectName}"][value!="${rev}"]`).attr('disabled', null);
+    }
+  });
+
   $('.compare-previous-trim21-cn').on('click', function () {
     const el = $(this);
-    compare(el.data('rev').toString(), el.data('previous').toString());
+    const left = String(el.data('rev'));
+    const right = String(el.data('previous'));
+
+    $('input[name="rev-left"]').attr('checked', null);
+    $('input[name="rev-right"]').attr('checked', null);
+    $(`input[name="rev-left"][value="${left}"]`)
+      .attr('checked', 'true')
+      .trigger('change');
+    $(`input[name="rev-right"][value="${right}"]`)
+      .attr('checked', 'true')
+      .trigger('change');
+
+    compare(left, right);
   });
 
   $('#columnInSubjectA span.text').append(
-    '<a href="#" id="compare-trim21-cn" tar class="l"> > 比较选中的版本</a>'
+    '<a href="#" id="compare-trim21-cn" class="l"> > 比较选中的版本</a>'
   );
   $('#compare-trim21-cn').on('click', function () {
     const selectedRevs = getSelectedVersion();
@@ -52,9 +102,7 @@ function getSelectedVersion(): string[] {
   const selectedRev = $('.rev-trim21-cn:checked');
   if (selectedRev.length < 2) {
     window.alert('请选中两个版本进行比较');
-  }
-  if (selectedRev.length > 2) {
-    window.alert('只能比较两个版本');
+    throw new Error();
   }
   selectedRev.each(function () {
     const val = $(this).val() as string;
