@@ -1,15 +1,17 @@
 // ==UserScript==
 // @name         bgm-wiki-rev-diff
+// @name:zh      显示条目信息版本差异
 // @namespace    https://trim21.me/
-// @version      0.1.0
+// @version      0.1.1
 // @author       Trim21 <i@trim21.me>
 // @source       https://github.com/Trim21/bgm-wiki-rev-diff
 // @supportURL   https://github.com/Trim21/bgm-wiki-rev-diff/issues
 // @license      MIT
 // @match        https://bgm.tv/subject/*/edit*
 // @match        https://bangumi.tv/subject/*/edit*
+// @match        https://chii.in/subject/*/edit*
 // @require      https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js
-// @require      https://cdn.jsdelivr.net/npm/diff2html@3.4.9/bundles/js/diff2html.min.js
+// @require      https://cdn.jsdelivr.net/npm/diff2html@3.4.11/bundles/js/diff2html.min.js
 // @require      https://cdn.jsdelivr.net/npm/diff@5.0.0/dist/diff.min.js
 // @connect      bgm.tv
 // @connect      bangumi.tv
@@ -41,33 +43,46 @@ const differ_1 = __webpack_require__("./src/differ.ts");
 const ui_1 = __webpack_require__("./src/ui.ts");
 const model_1 = __webpack_require__("./src/model.ts");
 function compare(revID1, revID2) {
-    ui_1.clear();
-    ui_1.show('<h2>loading versions...</h2>');
-    const rev1 = parser_1.getRevInfo(revID1);
-    const rev2 = parser_1.getRevInfo(revID2);
+    (0, ui_1.clear)();
+    (0, ui_1.show)('<h2>loading versions...</h2>');
+    const rev1 = (0, parser_1.getRevInfo)(revID1);
+    const rev2 = (0, parser_1.getRevInfo)(revID2);
     if (!rev1) {
         throw new Error(`error finding ${revID1}`);
     }
     const ps = [fetchRev(rev1), fetchRev(rev2)];
     Promise.all(ps)
         .then((values) => {
-        const d = differ_1.diff(values[1], values[0]);
-        const rendered = ui_1.render(d);
-        return ui_1.show(rendered);
+        const d = (0, differ_1.diff)(values[1], values[0]);
+        const rendered = (0, ui_1.render)(d);
+        return (0, ui_1.show)(rendered);
     })
         .catch((e) => {
         console.log(e);
-        ui_1.show('<h2 style="color:red">loading versions error</h2>');
+        (0, ui_1.show)('<h2 style="color:red">loading versions error</h2>');
     });
 }
 exports.compare = compare;
+const _cache = {};
 function fetchRev(rev) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!rev) {
-            return new model_1.Comment({ id: '0', comment: '', date: '', url: '' }, { title: '', rawInfo: '', description: '' });
+            return new model_1.Commit({
+                id: '0',
+                comment: '',
+                date: '',
+                url: '',
+            }, {
+                title: '',
+                rawInfo: '',
+                description: '',
+            });
         }
-        const res = yield fetch(rev.url);
-        return new model_1.Comment(rev, parser_1.parseRevDetails(yield res.text()));
+        if (!_cache[rev.id]) {
+            const res = yield fetch(rev.url);
+            _cache[rev.id] = new model_1.Commit(rev, (0, parser_1.parseRevDetails)(yield res.text()));
+        }
+        return _cache[rev.id];
     });
 }
 
@@ -81,27 +96,35 @@ function fetchRev(rev) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.diff = void 0;
 const Diff = __webpack_require__("diff");
-function diff(rev1, rev2) {
-    return `${titleDiff(rev1, rev2)}\n${infoDiff(rev1, rev2)}\n${descriptionDiff(rev1, rev2)}`;
+function diff(revOld, revNew) {
+    console.log(revOld);
+    console.log(revNew);
+    const d = [
+        titleDiff(revOld, revNew),
+        infoDiff(revOld, revNew),
+        descriptionDiff(revOld, revNew),
+    ].join('\n');
+    console.log(d);
+    return d;
 }
 exports.diff = diff;
 function titleDiff(rev1, rev2) {
     if (rev1.details.title === rev2.details.title) {
         return '';
     }
-    return Diff.createTwoFilesPatch('title', 'title', rev1.details.title, rev2.details.title, rev1.rev.date, rev2.rev.date);
+    return Diff.createPatch('条目名', rev1.details.title, rev2.details.title, rev1.rev.date, rev2.rev.date);
 }
 function infoDiff(rev1, rev2) {
     if (rev1.details.rawInfo === rev2.details.rawInfo) {
         return '';
     }
-    return Diff.createTwoFilesPatch('info', 'info', rev1.details.rawInfo, rev2.details.rawInfo, rev1.rev.date, rev2.rev.date);
+    return Diff.createPatch('相关信息', rev1.details.rawInfo, rev2.details.rawInfo, rev1.rev.date, rev2.rev.date);
 }
 function descriptionDiff(rev1, rev2) {
     if (rev1.details.description === rev2.details.description) {
         return '';
     }
-    return Diff.createTwoFilesPatch('description', 'description', rev1.details.description, rev2.details.description, rev1.rev.date, rev2.rev.date);
+    return Diff.createPatch('简介', rev1.details.description, rev2.details.description, rev1.rev.date, rev2.rev.date);
 }
 
 
@@ -130,29 +153,69 @@ function main() {
         yield initUI();
     });
 }
+const style = `
+<style>
+#show-trim21-cn .d2h-code-line {
+  width: calc(100% - 8em);
+  padding-right: 0;
+}
+
+#show-trim21-cn .d2h-code-line-ctn {
+  width: calc(100% - 8em);
+}
+</style>
+`;
 function initUI() {
     return __awaiter(this, void 0, void 0, function* () {
-        $('#columnInSubjectA').prepend('<div id="show-trim21-cn"></dev>');
+        $('#columnInSubjectA > hr.board').after(style + '<div id="show-trim21-cn"></div>');
         const revs = $('#pagehistory li').map(function (e) {
-            return parser_1.parseRevEl($(this)).id;
+            return (0, parser_1.parseRevEl)($(this)).id;
         });
         $('#pagehistory li').each(function (index) {
             const el = $(this);
             try {
-                const rev = parser_1.parseRevEl(el);
-                el.prepend(`<input type="checkbox" class="rev-trim21-cn" name="rev" label="select to compare" value="${rev.id}">`);
-                el.prepend(`(<a href="#" data-rev="${rev.id}" data-previous="${revs[index + 1]}" class="l compare-previous-trim21-cn">show diff</a>) `);
+                const rev = (0, parser_1.parseRevEl)(el);
+                el.prepend(`<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${rev.id}">`);
+                el.prepend(`<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${rev.id}">`);
+                const previous = revs[index + 1];
+                el.prepend(`(<a href="#" data-rev="${rev.id}" data-previous="${previous}" class="l compare-previous-trim21-cn">show diff</a>) `);
             }
             catch (e) { }
         });
+        const typeRevert = {
+            'rev-left': 'rev-right',
+            'rev-right': 'rev-left',
+        };
+        $('input[type="radio"]').on('change', function (e) {
+            const name = e.target.getAttribute('name');
+            if (!name) {
+                return;
+            }
+            const selectName = typeRevert[name];
+            const rev = e.target.getAttribute('value');
+            if (rev) {
+                $(`input[name="${selectName}"][value="${rev}"]`).attr('disabled', 'disabled');
+                $(`input[name="${selectName}"][value!="${rev}"]`).attr('disabled', null);
+            }
+        });
         $('.compare-previous-trim21-cn').on('click', function () {
             const el = $(this);
-            compare_1.compare(el.data('rev').toString(), el.data('previous').toString());
+            const left = String(el.data('rev'));
+            const right = String(el.data('previous'));
+            $('input[name="rev-left"]').attr('checked', null);
+            $('input[name="rev-right"]').attr('checked', null);
+            $(`input[name="rev-left"][value="${left}"]`)
+                .attr('checked', 'true')
+                .trigger('change');
+            $(`input[name="rev-right"][value="${right}"]`)
+                .attr('checked', 'true')
+                .trigger('change');
+            (0, compare_1.compare)(left, right);
         });
-        $('#columnInSubjectA span.text').append('<a href="#" id="compare-trim21-cn" tar class="l"> > 比较选中的版本</a>');
+        $('#columnInSubjectA span.text').append('<a href="#" id="compare-trim21-cn" class="l"> > 比较选中的版本</a>');
         $('#compare-trim21-cn').on('click', function () {
             const selectedRevs = getSelectedVersion();
-            compare_1.compare(selectedRevs[0], selectedRevs[1]);
+            (0, compare_1.compare)(selectedRevs[0], selectedRevs[1]);
         });
         $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />');
     });
@@ -162,9 +225,7 @@ function getSelectedVersion() {
     const selectedRev = $('.rev-trim21-cn:checked');
     if (selectedRev.length < 2) {
         window.alert('请选中两个版本进行比较');
-    }
-    if (selectedRev.length > 2) {
-        window.alert('只能比较两个版本');
+        throw new Error();
     }
     selectedRev.each(function () {
         const val = $(this).val();
@@ -183,14 +244,14 @@ main().catch(console.error);
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.Comment = void 0;
-class Comment {
+exports.Commit = void 0;
+class Commit {
     constructor(rev, detail) {
         this.rev = rev;
         this.details = detail;
     }
 }
-exports.Comment = Comment;
+exports.Commit = Commit;
 
 
 /***/ }),
@@ -212,7 +273,7 @@ function parseRevDetails(html) {
 }
 exports.parseRevDetails = parseRevDetails;
 function parseRevEl(el) {
-    const date = el.find('a').first().html();
+    const date = el.find('a:not(.compare-previous-trim21-cn)').first().html();
     const revEL = el.find('a.l:contains("恢复")');
     const revCommentEl = el.find('span.comment');
     let comment = '';
