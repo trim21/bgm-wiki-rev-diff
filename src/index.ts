@@ -43,7 +43,7 @@ async function initUI(): Promise<void> {
       const previous = revs[index + 1];
 
       el.prepend(
-        `(<a href="#" data-rev="${rev.id}" data-previous="${previous}" class="l compare-previous-trim21-cn">show diff</a>) `
+        `(<a href="#" data-rev="${rev.id}" data-previous="${previous}" class="l compare-previous-trim21-cn">显示修改</a>) `
       );
     } catch (e) {}
   });
