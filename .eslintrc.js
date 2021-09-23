@@ -27,6 +27,7 @@ module.exports = {
     node: true,
   },
   rules: {
+    'linebreak-style': ['error', 'unix'],
     indent: ['error', 2],
     'array-element-newline': ['error', 'consistent'],
     'array-bracket-newline': ['error', 'consistent'],

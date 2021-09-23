@@ -3,6 +3,7 @@
   "description": "Build your UserScript with webpack",
   "version": "0.1.2",
   "private": true,
+  "license": "MIT",
   "author": {
     "name": "Trim21",
     "email": "i@trim21.me"
