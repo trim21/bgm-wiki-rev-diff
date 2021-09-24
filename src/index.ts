@@ -18,6 +18,14 @@ const style = `
 #show-trim21-cn .d2h-code-line-ctn {
   width: calc(100% - 8em);
 }
+
+#columnInSubjectA .rev-trim21-cn {
+  margin: 0 0.2em;
+}
+
+ul#pagehistory > li > * {
+  vertical-align: middle;
+}
 </style>
 `;
 
