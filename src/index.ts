@@ -60,11 +60,14 @@ async function initUI(): Promise<void> {
     const selectName = typeRevert[name];
     const rev = e.target.getAttribute('value');
     if (rev) {
-      $(`input[name="${selectName}"][value="${rev}"]`).attr(
-        'disabled',
-        'disabled'
+      $(`input[name="${selectName}"][value="${rev}"]`).css(
+        'visibility',
+        'hidden'
       );
-      $(`input[name="${selectName}"][value!="${rev}"]`).attr('disabled', null);
+      $(`input[name="${selectName}"][value!="${rev}"]`).css(
+        'visibility',
+        'visible'
+      );
     }
   });
 
@@ -74,10 +77,11 @@ async function initUI(): Promise<void> {
     const right = String(el.data('previous'));
 
     $('input[name="rev-left"]').attr('checked', null);
-    $('input[name="rev-right"]').attr('checked', null);
     $(`input[name="rev-left"][value="${left}"]`)
       .attr('checked', 'true')
       .trigger('change');
+
+    $('input[name="rev-right"]').attr('checked', null);
     $(`input[name="rev-right"][value="${right}"]`)
       .attr('checked', 'true')
       .trigger('change');

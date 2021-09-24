@@ -8,7 +8,11 @@ export function parseRevDetails(html: string): RevDetail {
   const title = jq.find('input[name="subject_title"]').val()?.toString() ?? '';
   const description =
     jq.find('textarea#subject_summary').val()?.toString() ?? '';
-  return { title, rawInfo, description };
+  return {
+    title,
+    rawInfo,
+    description,
+  };
 }
 
 export function parseRevEl(el: JQuery): Rev {
