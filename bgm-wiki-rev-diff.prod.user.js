@@ -2,7 +2,7 @@
 // @name         bgm-wiki-rev-diff
 // @name:zh      显示条目信息版本差异
 // @namespace    https://trim21.me/
-// @version      0.1.3
+// @version      0.1.4
 // @author       Trim21 <i@trim21.me>
 // @source       https://github.com/Trim21/bgm-wiki-rev-diff
 // @supportURL   https://github.com/Trim21/bgm-wiki-rev-diff/issues
@@ -162,6 +162,14 @@ const style = `
 
 #show-trim21-cn .d2h-code-line-ctn {
   width: calc(100% - 8em);
+}
+
+#columnInSubjectA .rev-trim21-cn {
+  margin: 0 0.2em;
+}
+
+ul#pagehistory > li > * {
+  vertical-align: middle;
 }
 </style>
 `;
