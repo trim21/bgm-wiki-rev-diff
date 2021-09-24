@@ -2,7 +2,7 @@
 // @name         bgm-wiki-rev-diff
 // @name:zh      显示条目信息版本差异
 // @namespace    https://trim21.me/
-// @version      0.1.2
+// @version      0.1.3
 // @author       Trim21 <i@trim21.me>
 // @source       https://github.com/Trim21/bgm-wiki-rev-diff
 // @supportURL   https://github.com/Trim21/bgm-wiki-rev-diff/issues
@@ -194,8 +194,8 @@ function initUI() {
             const selectName = typeRevert[name];
             const rev = e.target.getAttribute('value');
             if (rev) {
-                $(`input[name="${selectName}"][value="${rev}"]`).attr('disabled', 'disabled');
-                $(`input[name="${selectName}"][value!="${rev}"]`).attr('disabled', null);
+                $(`input[name="${selectName}"][value="${rev}"]`).css('visibility', 'hidden');
+                $(`input[name="${selectName}"][value!="${rev}"]`).css('visibility', 'visible');
             }
         });
         $('.compare-previous-trim21-cn').on('click', function () {
@@ -203,10 +203,10 @@ function initUI() {
             const left = String(el.data('rev'));
             const right = String(el.data('previous'));
             $('input[name="rev-left"]').attr('checked', null);
-            $('input[name="rev-right"]').attr('checked', null);
             $(`input[name="rev-left"][value="${left}"]`)
                 .attr('checked', 'true')
                 .trigger('change');
+            $('input[name="rev-right"]').attr('checked', null);
             $(`input[name="rev-right"][value="${right}"]`)
                 .attr('checked', 'true')
                 .trigger('change');
@@ -269,7 +269,11 @@ function parseRevDetails(html) {
     const rawInfo = (_b = (_a = jq.find('#subject_infobox').val()) === null || _a === void 0 ? void 0 : _a.toString()) !== null && _b !== void 0 ? _b : '';
     const title = (_d = (_c = jq.find('input[name="subject_title"]').val()) === null || _c === void 0 ? void 0 : _c.toString()) !== null && _d !== void 0 ? _d : '';
     const description = (_f = (_e = jq.find('textarea#subject_summary').val()) === null || _e === void 0 ? void 0 : _e.toString()) !== null && _f !== void 0 ? _f : '';
-    return { title, rawInfo, description };
+    return {
+        title,
+        rawInfo,
+        description,
+    };
 }
 exports.parseRevDetails = parseRevDetails;
 function parseRevEl(el) {
