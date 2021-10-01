@@ -31,7 +31,7 @@ ul#pagehistory > li > * {
 
 async function initUI(): Promise<void> {
   $('#columnInSubjectA > hr.board').after(
-    style + '<div id="show-trim21-cn"></div>'
+    style + '<div id="show-trim21-cn"></div>',
   );
 
   const s = $('#pagehistory li');
@@ -48,15 +48,15 @@ async function initUI(): Promise<void> {
       return;
     }
     el.prepend(
-      `<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${id}">`
+      `<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${id}">`,
     );
     el.prepend(
-      `<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${id}">`
+      `<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${id}">`,
     );
 
     const previous = revs[index + 1] ?? revs[index + 2] ?? '';
     el.prepend(
-      `(<a href="#" data-rev="${id}" data-previous="${previous}" class="l compare-previous-trim21-cn">显示修改</a>) `
+      `(<a href="#" data-rev="${id}" data-previous="${previous}" class="l compare-previous-trim21-cn">显示修改</a>) `,
     );
   });
 
@@ -74,11 +74,11 @@ async function initUI(): Promise<void> {
     if (rev) {
       $(`input[name="${selectName}"][value="${rev}"]`).css(
         'visibility',
-        'hidden'
+        'hidden',
       );
       $(`input[name="${selectName}"][value!="${rev}"]`).css(
         'visibility',
-        'visible'
+        'visible',
       );
     }
   });
@@ -102,14 +102,14 @@ async function initUI(): Promise<void> {
   });
 
   $('#columnInSubjectA span.text').append(
-    '<a href="#" id="compare-trim21-cn" class="l"> > 比较选中的版本</a>'
+    '<a href="#" id="compare-trim21-cn" class="l"> > 比较选中的版本</a>',
   );
   $('#compare-trim21-cn').on('click', function () {
     const selectedRevs = getSelectedVersion();
     compare(selectedRevs[0], selectedRevs[1]);
   });
   $('head').append(
-    '<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />'
+    '<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />',
   );
 }
 

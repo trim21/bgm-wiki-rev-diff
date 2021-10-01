@@ -1,25 +1,26 @@
 module.exports = {
   extends: [
-    'standard',
     'standard-with-typescript',
     // 'eslint:recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:promise/recommended',
   ],
-  plugins: ['import', 'promise', '@typescript-eslint'],
+  plugins: ['@typescript-eslint'],
   overrides: [
     {
       files: ['*.ts'],
       globals: {
         JQuery: true,
+        browser: true,
+        node: false,
       },
     },
   ],
   parserOptions: {
     sourceType: 'module',
     project: './tsconfig.json',
-    ecmaVersion: 6,
+    ecmaVersion: 2021,
   },
   env: {
     jquery: true,
@@ -67,7 +68,16 @@ module.exports = {
     ],
     '@typescript-eslint/semi': ['error', 'always'],
     semi: ['error', 'always'],
-    'comma-dangle': ['error', 'always-multiline'],
+    'comma-dangle': [
+      'error',
+      {
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'always-multiline',
+        exports: 'always-multiline',
+        functions: 'ignore',
+      },
+    ],
     'import/no-unused-modules': [
       1,
       {
