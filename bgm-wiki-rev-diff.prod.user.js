@@ -2,7 +2,7 @@
 // @name         bgm-wiki-rev-diff
 // @name:zh      显示条目信息版本差异
 // @namespace    https://trim21.me/
-// @version      0.1.4
+// @version      0.1.5
 // @author       Trim21 <i@trim21.me>
 // @source       https://github.com/Trim21/bgm-wiki-rev-diff
 // @supportURL   https://github.com/Trim21/bgm-wiki-rev-diff/issues
@@ -60,6 +60,12 @@ function compare(revID1, revID2) {
         .catch((e) => {
         console.log(e);
         (0, ui_1.show)('<h2 style="color:red">loading versions error</h2>');
+    })
+        .finally(() => {
+        var _a;
+        (_a = document.getElementById('show-trim21-cn')) === null || _a === void 0 ? void 0 : _a.scrollIntoView({
+            behavior: 'smooth',
+        });
     });
 }
 exports.compare = compare;
@@ -97,15 +103,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.diff = void 0;
 const Diff = __webpack_require__("diff");
 function diff(revOld, revNew) {
-    console.log(revOld);
-    console.log(revNew);
-    const d = [
+    return [
         titleDiff(revOld, revNew),
         infoDiff(revOld, revNew),
         descriptionDiff(revOld, revNew),
     ].join('\n');
-    console.log(d);
-    return d;
 }
 exports.diff = diff;
 function titleDiff(rev1, rev2) {
@@ -176,19 +178,23 @@ ul#pagehistory > li > * {
 function initUI() {
     return __awaiter(this, void 0, void 0, function* () {
         $('#columnInSubjectA > hr.board').after(style + '<div id="show-trim21-cn"></div>');
-        const revs = $('#pagehistory li').map(function (e) {
-            return (0, parser_1.parseRevEl)($(this)).id;
+        const s = $('#pagehistory li');
+        const revs = Array.from(s).map(function (e) {
+            var _a;
+            return (_a = (0, parser_1.parseRevEl)($(e))) === null || _a === void 0 ? void 0 : _a.id;
         });
-        $('#pagehistory li').each(function (index) {
+        s.each(function (index) {
+            var _a, _b;
             const el = $(this);
-            try {
-                const rev = (0, parser_1.parseRevEl)(el);
-                el.prepend(`<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${rev.id}">`);
-                el.prepend(`<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${rev.id}">`);
-                const previous = revs[index + 1];
-                el.prepend(`(<a href="#" data-rev="${rev.id}" data-previous="${previous}" class="l compare-previous-trim21-cn">显示修改</a>) `);
+            const id = revs[index];
+            if (!id) {
+                el.prepend('<span style="padding-right: 1.4em"> 无法用于比较 </span>');
+                return;
             }
-            catch (e) { }
+            el.prepend(`<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${id}">`);
+            el.prepend(`<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${id}">`);
+            const previous = (_b = (_a = revs[index + 1]) !== null && _a !== void 0 ? _a : revs[index + 2]) !== null && _b !== void 0 ? _b : '';
+            el.prepend(`(<a href="#" data-rev="${id}" data-previous="${previous}" class="l compare-previous-trim21-cn">显示修改</a>) `);
         });
         const typeRevert = {
             'rev-left': 'rev-right',
@@ -295,7 +301,8 @@ function parseRevEl(el) {
     }
     const revHref = revEL.attr('href');
     if (!revHref) {
-        throw new Error();
+        // this is a merge commit, can't know what's really info
+        return undefined;
     }
     const revID = revHref.split('/').pop();
     if (!revID) {
@@ -312,11 +319,10 @@ exports.parseRevEl = parseRevEl;
 function getRevs() {
     const revs = [];
     $('#pagehistory li').each(function () {
-        const el = $(this);
-        try {
-            revs.push(parseRevEl(el));
+        const rev = parseRevEl($(this));
+        if (rev) {
+            revs.push(rev);
         }
-        catch (e) { }
     });
     return revs;
 }
