@@ -31,6 +31,7 @@ module.exports = {
     indent: ['error', 2],
     'array-element-newline': ['error', 'consistent'],
     'array-bracket-newline': ['error', 'consistent'],
+    'promise/catch-or-return': ['error', { allowFinally: true }],
     '@typescript-eslint/object-curly-spacing': ['error', 'always'],
     '@typescript-eslint/quotes': ['error', 'single', { avoidEscape: true }],
     quotes: ['error', 'single', { avoidEscape: true }],

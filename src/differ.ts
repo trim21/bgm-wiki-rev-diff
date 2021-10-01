@@ -3,17 +3,11 @@ import * as Diff from 'diff';
 import { Commit } from './model';
 
 export function diff(revOld: Commit, revNew: Commit): string {
-  console.log(revOld);
-  console.log(revNew);
-  const d = [
+  return [
     titleDiff(revOld, revNew),
     infoDiff(revOld, revNew),
     descriptionDiff(revOld, revNew),
   ].join('\n');
-
-  console.log(d);
-
-  return d;
 }
 
 function titleDiff(rev1: Commit, rev2: Commit): string {

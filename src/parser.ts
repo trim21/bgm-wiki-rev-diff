@@ -15,7 +15,7 @@ export function parseRevDetails(html: string): RevDetail {
   };
 }
 
-export function parseRevEl(el: JQuery): Rev {
+export function parseRevEl(el: JQuery): Rev | undefined {
   const date = el.find('a:not(.compare-previous-trim21-cn)').first().html();
   const revEL = el.find('a.l:contains("恢复")');
   const revCommentEl = el.find('span.comment');
@@ -26,7 +26,8 @@ export function parseRevEl(el: JQuery): Rev {
   }
   const revHref = revEL.attr('href');
   if (!revHref) {
-    throw new Error();
+    // this is a merge commit, can't know what's really info
+    return undefined;
   }
   const revID = revHref.split('/').pop();
   if (!revID) {
@@ -43,10 +44,10 @@ export function parseRevEl(el: JQuery): Rev {
 function getRevs(): Rev[] {
   const revs: Rev[] = [];
   $('#pagehistory li').each(function () {
-    const el = $(this);
-    try {
-      revs.push(parseRevEl(el));
-    } catch (e) {}
+    const rev = parseRevEl($(this));
+    if (rev) {
+      revs.push(rev);
+    }
   });
   return revs;
 }

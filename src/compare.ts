@@ -22,6 +22,11 @@ export function compare(revID1: string, revID2: string): void {
     .catch((e) => {
       console.log(e);
       show('<h2 style="color:red">loading versions error</h2>');
+    })
+    .finally(() => {
+      document.getElementById('show-trim21-cn')?.scrollIntoView({
+        behavior: 'smooth',
+      });
     });
 }
 

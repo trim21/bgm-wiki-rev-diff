@@ -33,27 +33,31 @@ async function initUI(): Promise<void> {
   $('#columnInSubjectA > hr.board').after(
     style + '<div id="show-trim21-cn"></div>'
   );
-  const revs = $('#pagehistory li').map(function (e) {
-    return parseRevEl($(this)).id;
+
+  const s = $('#pagehistory li');
+
+  const revs = Array.from(s).map(function (e) {
+    return parseRevEl($(e))?.id;
   });
 
-  $('#pagehistory li').each(function (index) {
+  s.each(function (index) {
     const el = $(this);
-    try {
-      const rev = parseRevEl(el);
-      el.prepend(
-        `<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${rev.id}">`
-      );
-      el.prepend(
-        `<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${rev.id}">`
-      );
+    const id = revs[index];
+    if (!id) {
+      el.prepend('<span style="padding-right: 1.4em"> 无法用于比较 </span>');
+      return;
+    }
+    el.prepend(
+      `<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${id}">`
+    );
+    el.prepend(
+      `<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${id}">`
+    );
 
-      const previous = revs[index + 1];
-
-      el.prepend(
-        `(<a href="#" data-rev="${rev.id}" data-previous="${previous}" class="l compare-previous-trim21-cn">显示修改</a>) `
-      );
-    } catch (e) {}
+    const previous = revs[index + 1] ?? revs[index + 2] ?? '';
+    el.prepend(
+      `(<a href="#" data-rev="${id}" data-previous="${previous}" class="l compare-previous-trim21-cn">显示修改</a>) `
+    );
   });
 
   const typeRevert: Record<string, string> = {
