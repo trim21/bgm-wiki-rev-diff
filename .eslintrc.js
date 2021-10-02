@@ -15,6 +15,12 @@ module.exports = {
         browser: true,
         node: false,
       },
+      rules: {
+        '@typescript-eslint/restrict-template-expressions': [
+          'error',
+          { allowAny: true },
+        ],
+      },
     },
   ],
   parserOptions: {

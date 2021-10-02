@@ -36,7 +36,8 @@ async function initUI(): Promise<void> {
   $('#columnInSubjectA > hr.board').after(
     style + '<div id="show-trim21-cn"></div>',
   );
-  const diff2htmlStyle = (await GM.getResourceUrl('diff2html'));
+  const diff2htmlStyle = await GM.getResourceUrl('diff2html');
+
   $('head').append(
     `<link rel='stylesheet' type='text/css' href='${diff2htmlStyle}' />`,
   );
