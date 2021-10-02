@@ -2,7 +2,7 @@
 // @name         bgm-wiki-rev-diff
 // @name:zh      显示条目信息版本差异
 // @namespace    https://trim21.me/
-// @version      0.1.5
+// @version      0.1.6
 // @author       Trim21 <i@trim21.me>
 // @source       https://github.com/Trim21/bgm-wiki-rev-diff
 // @supportURL   https://github.com/Trim21/bgm-wiki-rev-diff/issues
@@ -11,10 +11,11 @@
 // @match        https://bangumi.tv/subject/*/edit*
 // @match        https://chii.in/subject/*/edit*
 // @require      https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js
-// @require      https://cdn.jsdelivr.net/npm/diff2html@3.4.11/bundles/js/diff2html.min.js
+// @require      https://cdn.jsdelivr.net/npm/diff2html@3.4.12/bundles/js/diff2html.min.js
 // @require      https://cdn.jsdelivr.net/npm/diff@5.0.0/dist/diff.min.js
-// @connect      bgm.tv
-// @connect      bangumi.tv
+// @require      https://cdn.jsdelivr.net/npm/lodash@^4.17.21/lodash.min.js
+// @resource     diff2html https://cdn.jsdelivr.net/npm/diff2html@3.4.12/bundles/css/diff2html.min.css
+// @grant        GM.getResourceUrl
 // @run-at       document-end
 // ==/UserScript==
 
@@ -147,6 +148,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const $ = __webpack_require__("jquery");
+const lodash = __webpack_require__("lodash");
 const parser_1 = __webpack_require__("./src/parser.ts");
 const compare_1 = __webpack_require__("./src/compare.ts");
 function main() {
@@ -178,23 +180,25 @@ ul#pagehistory > li > * {
 function initUI() {
     return __awaiter(this, void 0, void 0, function* () {
         $('#columnInSubjectA > hr.board').after(style + '<div id="show-trim21-cn"></div>');
+        const diff2htmlStyle = yield GM.getResourceUrl('diff2html');
+        $('head').append(`<link rel='stylesheet' type='text/css' href='${diff2htmlStyle}' />`);
         const s = $('#pagehistory li');
         const revs = Array.from(s).map(function (e) {
             var _a;
             return (_a = (0, parser_1.parseRevEl)($(e))) === null || _a === void 0 ? void 0 : _a.id;
         });
         s.each(function (index) {
-            var _a, _b;
+            var _a;
             const el = $(this);
             const id = revs[index];
             if (!id) {
-                el.prepend('<span style="padding-right: 1.4em"> 无法用于比较 </span>');
+                el.prepend('<span style="padding-right: 1.4em"> 无法参与比较 </span>');
                 return;
             }
-            el.prepend(`<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${id}">`);
-            el.prepend(`<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${id}">`);
-            const previous = (_b = (_a = revs[index + 1]) !== null && _a !== void 0 ? _a : revs[index + 2]) !== null && _b !== void 0 ? _b : '';
-            el.prepend(`(<a href="#" data-rev="${id}" data-previous="${previous}" class="l compare-previous-trim21-cn">显示修改</a>) `);
+            el.prepend(`<input type='radio' class='rev-trim21-cn' name='rev-right' label='select to compare' value='${id}'>`);
+            el.prepend(`<input type='radio' class='rev-trim21-cn' name='rev-left' label='select to compare' value='${id}'>`);
+            const previous = (_a = lodash.find(revs, Boolean, index + 1)) !== null && _a !== void 0 ? _a : '';
+            el.prepend(`(<a href='#' data-rev='${id}' data-previous='${previous}' class='l compare-previous-trim21-cn'>显示修改</a>) `);
         });
         const typeRevert = {
             'rev-left': 'rev-right',
@@ -216,22 +220,23 @@ function initUI() {
             const el = $(this);
             const left = String(el.data('rev'));
             const right = String(el.data('previous'));
-            $('input[name="rev-left"]').attr('checked', null);
-            $(`input[name="rev-left"][value="${left}"]`)
-                .attr('checked', 'true')
-                .trigger('change');
-            $('input[name="rev-right"]').attr('checked', null);
-            $(`input[name="rev-right"][value="${right}"]`)
-                .attr('checked', 'true')
-                .trigger('change');
             (0, compare_1.compare)(left, right);
+            $(`input[name="rev-left"][value="${left}"]`).prop('checked', true);
+            $(`input[name="rev-left"][value!="${left}"]`).prop('checked', null);
+            $(`input[name="rev-right"][value="${left}"]`).css('visibility', 'hidden');
+            $(`input[name="rev-right"][value!="${left}"]`).css('visibility', 'visible');
+            $('input[name="rev-left"]').css('visibility', 'visible');
+            $('input[name="rev-right"]').prop('checked', null);
+            if (right) {
+                $(`input[name="rev-right"][value="${right}"]`).prop('checked', true);
+                $(`input[name="rev-left"][value="${right}"]`).css('visibility', 'hidden');
+            }
         });
         $('#columnInSubjectA span.text').append('<a href="#" id="compare-trim21-cn" class="l"> > 比较选中的版本</a>');
         $('#compare-trim21-cn').on('click', function () {
             const selectedRevs = getSelectedVersion();
             (0, compare_1.compare)(selectedRevs[0], selectedRevs[1]);
         });
-        $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />');
     });
 }
 function getSelectedVersion() {
@@ -380,6 +385,13 @@ module.exports = Diff;
 /***/ (function(module) {
 
 module.exports = Diff2Html;
+
+/***/ }),
+
+/***/ "lodash":
+/***/ (function(module) {
+
+module.exports = _;
 
 /***/ })
 
