@@ -1,7 +1,11 @@
 import * as $ from 'jquery';
+import * as lodash from 'lodash';
 
 import { parseRevEl } from './parser';
 import { compare } from './compare';
+import { dependencies } from '../package.json';
+
+type Pos = 'rev-left' | 'rev-right';
 
 async function main(): Promise<void> {
   console.log('start bgm-wiki-rev-diff UserScript');
@@ -33,6 +37,9 @@ async function initUI(): Promise<void> {
   $('#columnInSubjectA > hr.board').after(
     style + '<div id="show-trim21-cn"></div>',
   );
+  $('head').append(
+    `<link rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/diff2html@${dependencies.diff2html}/bundles/css/diff2html.min.css' />`,
+  );
 
   const s = $('#pagehistory li');
 
@@ -44,28 +51,31 @@ async function initUI(): Promise<void> {
     const el = $(this);
     const id = revs[index];
     if (!id) {
-      el.prepend('<span style="padding-right: 1.4em"> 无法用于比较 </span>');
+      el.prepend('<span style="padding-right: 1.4em"> 无法参与比较 </span>');
       return;
     }
     el.prepend(
-      `<input type="radio" class="rev-trim21-cn" name="rev-right" label="select to compare" value="${id}">`,
+      `<input type='radio' class='rev-trim21-cn' name='rev-right' label='select to compare' value='${id}'>`,
     );
     el.prepend(
-      `<input type="radio" class="rev-trim21-cn" name="rev-left" label="select to compare" value="${id}">`,
+      `<input type='radio' class='rev-trim21-cn' name='rev-left' label='select to compare' value='${id}'>`,
     );
 
-    const previous = revs[index + 1] ?? revs[index + 2] ?? '';
+    const previous =
+      lodash.find<string | undefined>(revs, Boolean, index + 1) ?? '';
+
     el.prepend(
-      `(<a href="#" data-rev="${id}" data-previous="${previous}" class="l compare-previous-trim21-cn">显示修改</a>) `,
+      `(<a href='#' data-rev='${id}' data-previous='${previous}' class='l compare-previous-trim21-cn'>显示修改</a>) `,
     );
   });
 
-  const typeRevert: Record<string, string> = {
+  const typeRevert: Record<Pos, Pos> = {
     'rev-left': 'rev-right',
     'rev-right': 'rev-left',
   };
+
   $('input[type="radio"]').on('change', function (e) {
-    const name = e.target.getAttribute('name');
+    const name = e.target.getAttribute('name') as Pos | undefined;
     if (!name) {
       return;
     }
@@ -76,6 +86,7 @@ async function initUI(): Promise<void> {
         'visibility',
         'hidden',
       );
+
       $(`input[name="${selectName}"][value!="${rev}"]`).css(
         'visibility',
         'visible',
@@ -85,20 +96,27 @@ async function initUI(): Promise<void> {
 
   $('.compare-previous-trim21-cn').on('click', function () {
     const el = $(this);
+
     const left = String(el.data('rev'));
     const right = String(el.data('previous'));
-
-    $('input[name="rev-left"]').attr('checked', null);
-    $(`input[name="rev-left"][value="${left}"]`)
-      .attr('checked', 'true')
-      .trigger('change');
-
-    $('input[name="rev-right"]').attr('checked', null);
-    $(`input[name="rev-right"][value="${right}"]`)
-      .attr('checked', 'true')
-      .trigger('change');
-
     compare(left, right);
+
+    $(`input[name="rev-left"][value="${left}"]`).prop('checked', true);
+
+    $(`input[name="rev-left"][value!="${left}"]`).prop('checked', null);
+
+    $(`input[name="rev-right"][value="${left}"]`).css('visibility', 'hidden');
+
+    $(`input[name="rev-right"][value!="${left}"]`).css('visibility', 'visible');
+
+    $('input[name="rev-left"]').css('visibility', 'visible');
+    $('input[name="rev-right"]').prop('checked', null);
+
+    if (right) {
+      $(`input[name="rev-right"][value="${right}"]`).prop('checked', true);
+
+      $(`input[name="rev-left"][value="${right}"]`).css('visibility', 'hidden');
+    }
   });
 
   $('#columnInSubjectA span.text').append(
@@ -108,9 +126,6 @@ async function initUI(): Promise<void> {
     const selectedRevs = getSelectedVersion();
     compare(selectedRevs[0], selectedRevs[1]);
   });
-  $('head').append(
-    '<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />',
-  );
 }
 
 function getSelectedVersion(): string[] {

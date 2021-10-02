@@ -16,6 +16,7 @@ const webpackConfig = {
     jquery: '$',
     diff2html: 'Diff2Html',
     diff: 'Diff',
+    lodash: '_',
   },
   module: {
     rules: [
