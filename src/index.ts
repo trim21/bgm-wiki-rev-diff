@@ -3,7 +3,6 @@ import * as lodash from 'lodash';
 
 import { parseRevEl } from './parser';
 import { compare } from './compare';
-import { dependencies } from '../package.json';
 
 type Pos = 'rev-left' | 'rev-right';
 
@@ -37,8 +36,9 @@ async function initUI(): Promise<void> {
   $('#columnInSubjectA > hr.board').after(
     style + '<div id="show-trim21-cn"></div>',
   );
+  const diff2htmlStyle = (await GM.getResourceUrl('diff2html'));
   $('head').append(
-    `<link rel='stylesheet' type='text/css' href='https://cdn.jsdelivr.net/npm/diff2html@${dependencies.diff2html}/bundles/css/diff2html.min.css' />`,
+    `<link rel='stylesheet' type='text/css' href='${diff2htmlStyle}' />`,
   );
 
   const s = $('#pagehistory li');

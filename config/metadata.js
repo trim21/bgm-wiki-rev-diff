@@ -26,5 +26,9 @@ module.exports = {
     `https://cdn.jsdelivr.net/npm/diff@${dependencies.diff}/dist/diff.min.js`,
     `https://cdn.jsdelivr.net/npm/lodash@${dependencies.lodash}/lodash.min.js`,
   ],
+  resource: [
+    `diff2html https://cdn.jsdelivr.net/npm/diff2html@${dependencies.diff2html}/bundles/css/diff2html.min.css`,
+  ],
+  grant: ['GM.getResourceUrl'],
   'run-at': 'document-end',
 };
