@@ -46,6 +46,7 @@
   "devDependencies": {
     "@types/diff": "5.0.1",
     "@types/greasemonkey": "^4.0.2",
+    "@types/hogan.js": "^3.0.1",
     "@types/jquery": "3.5.6",
     "@types/lodash": "^4.14.175",
     "@typescript-eslint/eslint-plugin": "4.32.0",

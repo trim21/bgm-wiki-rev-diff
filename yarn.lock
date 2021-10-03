@@ -121,6 +121,11 @@
   resolved "https://registry.yarnpkg.com/@types/greasemonkey/-/greasemonkey-4.0.2.tgz#cb378ee2b0d567ab988819ed4abe65a950afa352"
   integrity sha512-aCdl08liJA/GaT5xH8bhqbGCG6HCRU/jqs3QuJcMOsSxBDgbiif3LVLI7AF7FekPN3XxGevRHSw7ov8ITKf4Hw==
 
+"@types/hogan.js@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@types/hogan.js/-/hogan.js-3.0.1.tgz#64c54407b30da359763e14877f5702b8ae85d61c"
+  integrity sha512-D03i/2OY7kGyMq9wdQ7oD8roE49z/ZCZThe/nbahtvuqCNZY9T2MfedOWyeBdbEpY2W8Gnh/dyJLdFtUCOkYbg==
+
 "@types/jquery@3.5.6":
   version "3.5.6"
   resolved "https://registry.yarnpkg.com/@types/jquery/-/jquery-3.5.6.tgz#97ac8e36dccd8ad8ed3f3f3b48933614d9fd8cf0"
