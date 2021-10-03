@@ -2721,10 +2721,10 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-userscript-metadata-webpack-plugin@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/userscript-metadata-webpack-plugin/-/userscript-metadata-webpack-plugin-0.1.0.tgz#7c2268e633b383f59789ec41c99015ff13ab2072"
-  integrity sha512-YAuWv+CyhRRex1cA77YRVpTRnQpJDwjz2KsbwN4iOEEUH1I8VzkKlIauxA2cZg8KGINcjQJ9H1LpSOplEciRDg==
+userscript-metadata-webpack-plugin@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/userscript-metadata-webpack-plugin/-/userscript-metadata-webpack-plugin-0.1.1.tgz#1e7465c48e002f74f13b8ac6d855c9ee4ebdd898"
+  integrity sha512-pWQ8TJc1oPsLrAOKJz65Bt3SR/eygtVahyicnaA/wSQjlRI4OUVHlMxDG0lKRDFKuJ1bzIRtmpKAL08RZS7nVQ==
 
 v8-compile-cache@^2.0.3, v8-compile-cache@^2.2.0:
   version "2.3.0"
