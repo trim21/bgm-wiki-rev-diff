@@ -21,14 +21,9 @@ const webpackConfig = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.[tj]s$/,
         exclude: /node_modules/,
-        use: [{ loader: 'babel-loader' }],
-      },
-      {
-        test: /\.ts$/,
-        exclude: /node_modules/,
-        use: [{ loader: 'babel-loader' }, { loader: 'ts-loader' }],
+        use: 'babel-loader',
       },
     ],
   },
