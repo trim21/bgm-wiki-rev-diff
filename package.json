@@ -9,7 +9,7 @@
     "email": "i@trim21.me"
   },
   "browserslist": [
-    "last 2 chrome versions",
+    "chrome >= 86",
     "last 2 edge versions",
     "last 2 firefox versions"
   ],
