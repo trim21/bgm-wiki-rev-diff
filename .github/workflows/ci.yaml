@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14]
+        node-version: [16]
     steps:
       - uses: actions/checkout@v2
 
@@ -36,7 +36,7 @@ jobs:
       - run: yarn build
 
       - name: Preview
-        if: ${{ (matrix.node-version == '14') && (github.ref == 'refs/heads/master') }}
+        if: ${{ (matrix.node-version == '16') && (github.ref == 'refs/heads/master') }}
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -55,12 +55,12 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v2
         with:
-          node-version: 14
+          node-version: 16
 
       - uses: actions/cache@v2
         with:
           path: ./node_modules
-          key: node-14-${{ hashFiles('yarn.lock') }}
+          key: node-16-${{ hashFiles('yarn.lock') }}
 
       - run: yarn
         if: steps.cache-primes.outputs.cache-hit != 'true'
