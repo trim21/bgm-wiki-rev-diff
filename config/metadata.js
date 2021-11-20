@@ -29,6 +29,11 @@ module.exports = {
   resource: [
     `diff2html https://cdn.jsdelivr.net/npm/diff2html@${dependencies.diff2html}/bundles/css/diff2html.min.css`,
   ],
-  grant: ['GM.getResourceUrl'],
+  grant: [
+    'GM.getResourceUrl',
+    'GM.registerMenuCommand',
+    'GM.setValue',
+    'GM.getValue',
+  ],
   'run-at': 'document-end',
 };

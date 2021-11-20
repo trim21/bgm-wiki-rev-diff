@@ -14,9 +14,11 @@ export function compare(revID1: string, revID2: string): void {
   const ps: Array<Promise<Commit>> = [fetchRev(rev1), fetchRev(rev2)];
 
   Promise.all(ps)
-    .then((values) => {
+    .then(async (values) => {
       const d = diff(values[1], values[0]);
-      const rendered = render(d);
+      return await render(d);
+    })
+    .then((rendered) => {
       return show(rendered);
     })
     .catch((e) => {

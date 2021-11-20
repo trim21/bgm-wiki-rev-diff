@@ -1,8 +1,10 @@
 import * as $ from 'jquery';
 import * as lodash from 'lodash';
+import { OutputFormatType } from 'diff2html/lib/types';
 
 import { parseRevEl } from './parser';
 import { compare } from './compare';
+import { configKey } from './config';
 
 type Pos = 'rev-left' | 'rev-right';
 
@@ -13,7 +15,7 @@ async function main(): Promise<void> {
 
 const style = `
 <style>
-#show-trim21-cn .d2h-code-line {
+#show-trim21-cn .d2h-code-line, #show-trim21-cn .d2h-code-side-line {
   width: calc(100% - 8em);
   padding-right: 0;
 }
@@ -33,9 +35,19 @@ ul#pagehistory > li > * {
 `;
 
 async function initUI(): Promise<void> {
-  $('#columnInSubjectA > hr.board').after(
-    style + '<div id="show-trim21-cn"></div>',
-  );
+  GM.registerMenuCommand('切换diff视图', function () {
+    void (async () => {
+      let outputFormat = await GM.getValue<OutputFormatType>(configKey);
+      if (!outputFormat || outputFormat === 'side-by-side') {
+        outputFormat = 'line-by-line';
+      } else {
+        outputFormat = 'side-by-side';
+      }
+      await GM.setValue(configKey, outputFormat);
+    })();
+  });
+
+  $('#headerSubject').after(style + '<div id="show-trim21-cn"></div>');
   const diff2htmlStyle = await GM.getResourceUrl('diff2html');
 
   $('head').append(

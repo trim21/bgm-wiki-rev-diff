@@ -20,6 +20,7 @@ function titleDiff(rev1: Commit, rev2: Commit): string {
     rev2.details.title,
     rev1.rev.date,
     rev2.rev.date,
+    { context: 100 },
   );
 }
 
@@ -33,6 +34,7 @@ function infoDiff(rev1: Commit, rev2: Commit): string {
     rev2.details.rawInfo,
     rev1.rev.date,
     rev2.rev.date,
+    { context: 100 },
   );
 }
 
@@ -46,5 +48,6 @@ function descriptionDiff(rev1: Commit, rev2: Commit): string {
     rev2.details.description,
     rev1.rev.date,
     rev2.rev.date,
+    { context: 100 },
   );
 }
