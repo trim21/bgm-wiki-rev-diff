@@ -2,7 +2,7 @@
 // @name         bgm-wiki-rev-diff
 // @name:zh      显示条目信息版本差异
 // @namespace    https://trim21.me/
-// @version      0.1.9
+// @version      0.2.0
 // @author       Trim21 <i@trim21.me>
 // @source       https://github.com/Trim21/bgm-wiki-rev-diff
 // @supportURL   https://github.com/Trim21/bgm-wiki-rev-diff/issues
@@ -11,11 +11,14 @@
 // @match        https://bangumi.tv/subject/*/edit*
 // @match        https://chii.in/subject/*/edit*
 // @require      https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js
-// @require      https://cdn.jsdelivr.net/npm/diff2html@3.4.12/bundles/js/diff2html.min.js
+// @require      https://cdn.jsdelivr.net/npm/diff2html@3.4.13/bundles/js/diff2html.min.js
 // @require      https://cdn.jsdelivr.net/npm/diff@5.0.0/dist/diff.min.js
 // @require      https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js
-// @resource     diff2html https://cdn.jsdelivr.net/npm/diff2html@3.4.12/bundles/css/diff2html.min.css
+// @resource     diff2html https://cdn.jsdelivr.net/npm/diff2html@3.4.13/bundles/css/diff2html.min.css
 // @grant        GM.getResourceUrl
+// @grant        GM.registerMenuCommand
+// @grant        GM.setValue
+// @grant        GM.getValue
 // @run-at       document-end
 // ==/UserScript==
 
@@ -107,7 +110,9 @@ function titleDiff(rev1, rev2) {
     return '';
   }
 
-  return external_Diff_namespaceObject.createPatch('条目名', rev1.details.title, rev2.details.title, rev1.rev.date, rev2.rev.date);
+  return external_Diff_namespaceObject.createPatch('条目名', rev1.details.title, rev2.details.title, rev1.rev.date, rev2.rev.date, {
+    context: 100
+  });
 }
 
 function infoDiff(rev1, rev2) {
@@ -115,7 +120,9 @@ function infoDiff(rev1, rev2) {
     return '';
   }
 
-  return external_Diff_namespaceObject.createPatch('相关信息', rev1.details.rawInfo, rev2.details.rawInfo, rev1.rev.date, rev2.rev.date);
+  return external_Diff_namespaceObject.createPatch('相关信息', rev1.details.rawInfo, rev2.details.rawInfo, rev1.rev.date, rev2.rev.date, {
+    context: 100
+  });
 }
 
 function descriptionDiff(rev1, rev2) {
@@ -123,15 +130,28 @@ function descriptionDiff(rev1, rev2) {
     return '';
   }
 
-  return external_Diff_namespaceObject.createPatch('简介', rev1.details.description, rev2.details.description, rev1.rev.date, rev2.rev.date);
+  return external_Diff_namespaceObject.createPatch('简介', rev1.details.description, rev2.details.description, rev1.rev.date, rev2.rev.date, {
+    context: 100
+  });
 }
 ;// CONCATENATED MODULE: external "Diff2Html"
 const external_Diff2Html_namespaceObject = Diff2Html;
+;// CONCATENATED MODULE: ./src/config.ts
+const configKey = 'view-mode';
 ;// CONCATENATED MODULE: ./src/ui.ts
 
 
-function render(diff) {
-  return external_Diff2Html_namespaceObject.html(diff);
+
+async function render(diff) {
+  let outputFormat = await GM.getValue(configKey);
+
+  if (!outputFormat) {
+    outputFormat = 'line-by-line';
+  }
+
+  return external_Diff2Html_namespaceObject.html(diff, {
+    outputFormat: outputFormat
+  });
 }
 function show(html) {
   external_$_namespaceObject('#show-trim21-cn').html(html);
@@ -163,9 +183,10 @@ function compare(revID1, revID2) {
   }
 
   const ps = [fetchRev(rev1), fetchRev(rev2)];
-  Promise.all(ps).then(values => {
+  Promise.all(ps).then(async values => {
     const d = diff(values[1], values[0]);
-    const rendered = render(d);
+    return await render(d);
+  }).then(rendered => {
     return show(rendered);
   }).catch(e => {
     console.log(e);
@@ -207,6 +228,7 @@ async function fetchRev(rev) {
 
 
 
+
 async function main() {
   console.log('start bgm-wiki-rev-diff UserScript');
   await initUI();
@@ -214,7 +236,7 @@ async function main() {
 
 const style = `
 <style>
-#show-trim21-cn .d2h-code-line {
+#show-trim21-cn .d2h-code-line, #show-trim21-cn .d2h-code-side-line {
   width: calc(100% - 8em);
   padding-right: 0;
 }
@@ -234,7 +256,20 @@ ul#pagehistory > li > * {
 `;
 
 async function initUI() {
-  external_$_namespaceObject('#columnInSubjectA > hr.board').after(style + '<div id="show-trim21-cn"></div>');
+  GM.registerMenuCommand('切换diff视图', function () {
+    void (async () => {
+      let outputFormat = await GM.getValue(configKey);
+
+      if (!outputFormat || outputFormat === 'side-by-side') {
+        outputFormat = 'line-by-line';
+      } else {
+        outputFormat = 'side-by-side';
+      }
+
+      await GM.setValue(configKey, outputFormat);
+    })();
+  });
+  external_$_namespaceObject('#headerSubject').after(style + '<div id="show-trim21-cn"></div>');
   const diff2htmlStyle = await GM.getResourceUrl('diff2html');
   external_$_namespaceObject('head').append(`<link rel='stylesheet' type='text/css' href='${diff2htmlStyle}' />`);
   const s = external_$_namespaceObject('#pagehistory li');
