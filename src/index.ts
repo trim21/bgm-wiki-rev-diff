@@ -36,11 +36,6 @@ const style = `
 ul#pagehistory > li > * {
   vertical-align: middle;
 }
-
-#show-diff-view-side-by-side .d2h-code-line,
-#show-diff-view-side-by-side .d2h-code-line-ctn {
-      white-space: normal;
-}
 </style>
 `;
 
