@@ -2,7 +2,7 @@
 // @name         bgm-wiki-rev-diff
 // @name:zh      显示条目信息版本差异
 // @namespace    https://trim21.me/
-// @version      0.2.0
+// @version      0.2.1
 // @author       Trim21 <i@trim21.me>
 // @source       https://github.com/Trim21/bgm-wiki-rev-diff
 // @supportURL   https://github.com/Trim21/bgm-wiki-rev-diff/issues
@@ -97,67 +97,81 @@ function getRevInfo(revID) {
     }
   }
 }
-;// CONCATENATED MODULE: external "Diff"
-const external_Diff_namespaceObject = Diff;
-;// CONCATENATED MODULE: ./src/differ.ts
-
-function diff(revOld, revNew) {
-  return [titleDiff(revOld, revNew), infoDiff(revOld, revNew), descriptionDiff(revOld, revNew)].join('\n');
-}
-
-function titleDiff(rev1, rev2) {
-  if (rev1.details.title === rev2.details.title) {
-    return '';
-  }
-
-  return external_Diff_namespaceObject.createPatch('条目名', rev1.details.title, rev2.details.title, rev1.rev.date, rev2.rev.date, {
-    context: 100
-  });
-}
-
-function infoDiff(rev1, rev2) {
-  if (rev1.details.rawInfo === rev2.details.rawInfo) {
-    return '';
-  }
-
-  return external_Diff_namespaceObject.createPatch('相关信息', rev1.details.rawInfo, rev2.details.rawInfo, rev1.rev.date, rev2.rev.date, {
-    context: 100
-  });
-}
-
-function descriptionDiff(rev1, rev2) {
-  if (rev1.details.description === rev2.details.description) {
-    return '';
-  }
-
-  return external_Diff_namespaceObject.createPatch('简介', rev1.details.description, rev2.details.description, rev1.rev.date, rev2.rev.date, {
-    context: 100
-  });
-}
 ;// CONCATENATED MODULE: external "Diff2Html"
 const external_Diff2Html_namespaceObject = Diff2Html;
 ;// CONCATENATED MODULE: ./src/config.ts
 const configKey = 'view-mode';
+;// CONCATENATED MODULE: external "Diff"
+const external_Diff_namespaceObject = Diff;
+;// CONCATENATED MODULE: ./src/differ.ts
+
+function diff(revOld, revNew, style) {
+  const options = {
+    context: 100
+  };
+
+  if (style === 'line-by-line') {
+    options.context = 4;
+  }
+
+  return [titleDiff(revOld, revNew, options), infoDiff(revOld, revNew, options), descriptionDiff(revOld, revNew, options)].join('\n');
+}
+
+function titleDiff(rev1, rev2, options) {
+  if (rev1.details.title === rev2.details.title) {
+    return '';
+  }
+
+  return external_Diff_namespaceObject.createPatch('条目名', rev1.details.title, rev2.details.title, rev1.rev.date, rev2.rev.date, options);
+}
+
+function infoDiff(rev1, rev2, options) {
+  if (rev1.details.rawInfo === rev2.details.rawInfo) {
+    return '';
+  }
+
+  return external_Diff_namespaceObject.createPatch('相关信息', rev1.details.rawInfo, rev2.details.rawInfo, rev1.rev.date, rev2.rev.date, options);
+}
+
+function descriptionDiff(rev1, rev2, options) {
+  if (rev1.details.description === rev2.details.description) {
+    return '';
+  }
+
+  return external_Diff_namespaceObject.createPatch('简介', rev1.details.description, rev2.details.description, rev1.rev.date, rev2.rev.date, options);
+}
 ;// CONCATENATED MODULE: ./src/ui.ts
 
 
 
-async function render(diff) {
+
+async function render(revOld, revNew) {
+  var _document$getElementB;
+
   let outputFormat = await GM.getValue(configKey);
 
   if (!outputFormat) {
     outputFormat = 'line-by-line';
   }
 
-  return external_Diff2Html_namespaceObject.html(diff, {
+  const patch = diff(revOld, revNew, outputFormat);
+  const html = external_Diff2Html_namespaceObject.html(patch, {
     outputFormat: outputFormat
+  });
+  const elID = `show-diff-view-${outputFormat}`;
+  show('');
+  external_$_namespaceObject(`#${elID}`).html(html);
+  (_document$getElementB = document.getElementById(elID)) === null || _document$getElementB === void 0 ? void 0 : _document$getElementB.scrollIntoView({
+    behavior: 'smooth'
   });
 }
 function show(html) {
-  external_$_namespaceObject('#show-trim21-cn').html(html);
+  external_$_namespaceObject('#show-diff-info').html(html);
 }
 function clear() {
-  external_$_namespaceObject('#show-trim21-cn').html('');
+  external_$_namespaceObject('#show-diff-view-line-by-line').html('');
+  external_$_namespaceObject('#show-diff-view-side-by-side').html('');
+  show('');
 }
 ;// CONCATENATED MODULE: ./src/model.ts
 class Commit {
@@ -168,7 +182,6 @@ class Commit {
 
 }
 ;// CONCATENATED MODULE: ./src/compare.ts
-
 
 
 
@@ -184,19 +197,10 @@ function compare(revID1, revID2) {
 
   const ps = [fetchRev(rev1), fetchRev(rev2)];
   Promise.all(ps).then(async values => {
-    const d = diff(values[1], values[0]);
-    return await render(d);
-  }).then(rendered => {
-    return show(rendered);
+    return await render(values[1], values[0]);
   }).catch(e => {
-    console.log(e);
-    show('<h2 style="color:red">loading versions error</h2>');
-  }).finally(() => {
-    var _document$getElementB;
-
-    (_document$getElementB = document.getElementById('show-trim21-cn')) === null || _document$getElementB === void 0 ? void 0 : _document$getElementB.scrollIntoView({
-      behavior: 'smooth'
-    });
+    console.error(e);
+    show('<div style="color: red">获取历史修改失败，请刷新页面后重试</div>');
   });
 }
 const _cache = {};
@@ -236,12 +240,17 @@ async function main() {
 
 const style = `
 <style>
-#show-trim21-cn .d2h-code-line, #show-trim21-cn .d2h-code-side-line {
+#show-diff-view-side-by-side {
+  margin:0 auto;
+  max-width: 100em;
+}
+
+.show-version-diff .d2h-code-line, .show-version-diff .d2h-code-side-line {
   width: calc(100% - 8em);
   padding-right: 0;
 }
 
-#show-trim21-cn .d2h-code-line-ctn {
+.show-version-diff .d2h-code-line-ctn {
   width: calc(100% - 8em);
 }
 
@@ -251,6 +260,11 @@ const style = `
 
 ul#pagehistory > li > * {
   vertical-align: middle;
+}
+
+#show-diff-view-side-by-side .d2h-code-line,
+#show-diff-view-side-by-side .d2h-code-line-ctn {
+      white-space: normal;
 }
 </style>
 `;
@@ -269,9 +283,11 @@ async function initUI() {
       await GM.setValue(configKey, outputFormat);
     })();
   });
-  external_$_namespaceObject('#headerSubject').after(style + '<div id="show-trim21-cn"></div>');
+  external_$_namespaceObject('#headerSubject').after('<div id="show-diff-view-side-by-side" class="show-version-diff"></div>');
+  external_$_namespaceObject('#columnInSubjectA > hr.board').after(style + '<div id="show-diff-view-line-by-line" class="show-version-diff"></div>');
+  external_$_namespaceObject('#columnInSubjectA .subtitle').after('<div id="show-diff-info"></div>');
   const diff2htmlStyle = await GM.getResourceUrl('diff2html');
-  external_$_namespaceObject('head').append(`<link rel='stylesheet' type='text/css' href='${diff2htmlStyle}' />`);
+  external_$_namespaceObject('head').append(style).append(`<link rel='stylesheet' type='text/css' href='${diff2htmlStyle}' />`);
   const s = external_$_namespaceObject('#pagehistory li');
   const revs = Array.from(s).map(function (e) {
     var _parseRevEl;
