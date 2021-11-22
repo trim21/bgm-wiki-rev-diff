@@ -1,5 +1,4 @@
 import { getRevInfo, parseRevDetails } from './parser';
-import { diff } from './differ';
 import { clear, render, show } from './ui';
 import { Commit, Rev } from './model';
 
@@ -15,20 +14,11 @@ export function compare(revID1: string, revID2: string): void {
 
   Promise.all(ps)
     .then(async (values) => {
-      const d = diff(values[1], values[0]);
-      return await render(d);
-    })
-    .then((rendered) => {
-      return show(rendered);
+      return await render(values[1], values[0]);
     })
     .catch((e) => {
-      console.log(e);
-      show('<h2 style="color:red">loading versions error</h2>');
-    })
-    .finally(() => {
-      document.getElementById('show-trim21-cn')?.scrollIntoView({
-        behavior: 'smooth',
-      });
+      console.error(e);
+      show('<div style="color: red">获取历史修改失败，请刷新页面后重试</div>');
     });
 }
 

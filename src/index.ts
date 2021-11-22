@@ -15,12 +15,17 @@ async function main(): Promise<void> {
 
 const style = `
 <style>
-#show-trim21-cn .d2h-code-line, #show-trim21-cn .d2h-code-side-line {
+#show-diff-view-side-by-side {
+  margin:0 auto;
+  max-width: 100em;
+}
+
+.show-version-diff .d2h-code-line, .show-version-diff .d2h-code-side-line {
   width: calc(100% - 8em);
   padding-right: 0;
 }
 
-#show-trim21-cn .d2h-code-line-ctn {
+.show-version-diff .d2h-code-line-ctn {
   width: calc(100% - 8em);
 }
 
@@ -30,6 +35,11 @@ const style = `
 
 ul#pagehistory > li > * {
   vertical-align: middle;
+}
+
+#show-diff-view-side-by-side .d2h-code-line,
+#show-diff-view-side-by-side .d2h-code-line-ctn {
+      white-space: normal;
 }
 </style>
 `;
@@ -47,12 +57,24 @@ async function initUI(): Promise<void> {
     })();
   });
 
-  $('#headerSubject').after(style + '<div id="show-trim21-cn"></div>');
+  $('#headerSubject').after(
+    '<div id="show-diff-view-side-by-side" class="show-version-diff"></div>',
+  );
+
+  $('#columnInSubjectA > hr.board').after(
+    style +
+      '<div id="show-diff-view-line-by-line" class="show-version-diff"></div>',
+  );
+
+  $('#columnInSubjectA .subtitle').after('<div id="show-diff-info"></div>');
+
   const diff2htmlStyle = await GM.getResourceUrl('diff2html');
 
-  $('head').append(
-    `<link rel='stylesheet' type='text/css' href='${diff2htmlStyle}' />`,
-  );
+  $('head')
+    .append(style)
+    .append(
+      `<link rel='stylesheet' type='text/css' href='${diff2htmlStyle}' />`,
+    );
 
   const s = $('#pagehistory li');
 
