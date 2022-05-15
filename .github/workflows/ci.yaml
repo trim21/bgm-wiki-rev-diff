@@ -42,7 +42,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           commit_message: deploy ${{ github.ref }}
-          force_orphan: true
           publish_branch: preview
 
   dist:
