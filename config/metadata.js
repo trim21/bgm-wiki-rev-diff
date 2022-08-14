@@ -7,11 +7,11 @@ const {
 } = require('../package.json');
 
 module.exports = {
-  name: name,
+  name,
   'name:zh': '显示条目信息版本差异',
   namespace: 'https://trim21.me/',
-  version: version,
-  author: author,
+  version,
+  author,
   source: repository.url,
   supportURL: repository.url + '/issues',
   license: 'MIT',

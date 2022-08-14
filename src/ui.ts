@@ -14,7 +14,7 @@ export async function render(revOld: Commit, revNew: Commit): Promise<string> {
 
   const patch = diff(revOld, revNew, outputFormat);
 
-  const html = Diff2Html.html(patch, { outputFormat: outputFormat });
+  const html = Diff2Html.html(patch, { outputFormat });
   const elID = `show-diff-view-${outputFormat}`;
 
   show('');
