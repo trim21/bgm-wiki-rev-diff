@@ -1,21 +1,72 @@
 module.exports = {
   extends: [
-    'standard-with-typescript',
-    // 'eslint:recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:promise/recommended',
   ],
-  plugins: ['@typescript-eslint'],
   overrides: [
     {
-      files: ['*.ts'],
+      files: ['*.js'],
+      parserOptions: {
+        sourceType: 'module',
+      },
+      globals: {
+        JQuery: false,
+        browser: false,
+        node: true,
+      },
+    },
+    {
+      files: ['src/**/*.ts'],
       globals: {
         JQuery: true,
         browser: true,
         node: false,
       },
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+      plugins: ['@typescript-eslint'],
+      extends: [
+        'standard-with-typescript',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+      ],
       rules: {
+        'comma-dangle': [
+          'error',
+          {
+            arrays: 'always-multiline',
+            objects: 'always-multiline',
+            imports: 'always-multiline',
+            exports: 'always-multiline',
+            functions: 'ignore',
+          },
+        ],
+        '@typescript-eslint/space-before-function-paren': [
+          'error',
+          {
+            anonymous: 'always',
+            named: 'never',
+            asyncArrow: 'always',
+          },
+        ],
+        '@typescript-eslint/member-delimiter-style': [
+          'error',
+          {
+            multiline: {
+              delimiter: 'semi',
+              requireLast: true,
+            },
+            singleline: {
+              delimiter: 'semi',
+              requireLast: false,
+            },
+            multilineDetection: 'brackets',
+          },
+        ],
+        '@typescript-eslint/semi': ['error', 'always'],
+        '@typescript-eslint/strict-boolean-expressions': 'off',
         '@typescript-eslint/restrict-template-expressions': [
           'error',
           { allowAny: true },
@@ -25,13 +76,7 @@ module.exports = {
   ],
   parserOptions: {
     sourceType: 'module',
-    project: './tsconfig.json',
     ecmaVersion: 2021,
-  },
-  env: {
-    jquery: true,
-    browser: true,
-    node: true,
   },
   rules: {
     'linebreak-style': ['error', 'unix'],
@@ -42,28 +87,7 @@ module.exports = {
     '@typescript-eslint/object-curly-spacing': ['error', 'always'],
     '@typescript-eslint/quotes': ['error', 'single', { avoidEscape: true }],
     quotes: ['error', 'single', { avoidEscape: true }],
-    '@typescript-eslint/member-delimiter-style': [
-      'error',
-      {
-        multiline: {
-          delimiter: 'semi',
-          requireLast: true,
-        },
-        singleline: {
-          delimiter: 'semi',
-          requireLast: false,
-        },
-        multilineDetection: 'brackets',
-      },
-    ],
-    '@typescript-eslint/space-before-function-paren': [
-      'error',
-      {
-        anonymous: 'always',
-        named: 'never',
-        asyncArrow: 'always',
-      },
-    ],
+
     'space-before-function-paren': [
       'error',
       {
@@ -72,7 +96,6 @@ module.exports = {
         asyncArrow: 'always',
       },
     ],
-    '@typescript-eslint/semi': ['error', 'always'],
     semi: ['error', 'always'],
     'comma-dangle': [
       'error',

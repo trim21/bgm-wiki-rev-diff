@@ -33,6 +33,8 @@ jobs:
 
       - run: yarn lint
 
+      - run: npx tsc
+
       - run: yarn build
 
       - name: Preview

@@ -6,7 +6,7 @@ import { configKey } from './config';
 import { Commit } from './model';
 import { diff } from './differ';
 
-export async function render(revOld: Commit, revNew: Commit): Promise<string> {
+export async function render(revOld: Commit, revNew: Commit): Promise<void> {
   let outputFormat = await GM.getValue<OutputFormatType>(configKey);
   if (!outputFormat) {
     outputFormat = 'line-by-line';

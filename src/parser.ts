@@ -45,7 +45,7 @@ function getRevs(): Rev[] {
   const revs: Rev[] = [];
   $('#pagehistory li').each(function () {
     const rev = parseRevEl($(this));
-    if (rev) {
+    if (rev != null) {
       revs.push(rev);
     }
   });

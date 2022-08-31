@@ -7,7 +7,7 @@ export function compare(revID1: string, revID2: string): void {
   show('<h2>loading versions...</h2>');
   const rev1 = getRevInfo(revID1);
   const rev2 = getRevInfo(revID2);
-  if (!rev1) {
+  if (rev1 == null) {
     throw new Error(`error finding ${revID1}`);
   }
   const ps: Array<Promise<Commit>> = [fetchRev(rev1), fetchRev(rev2)];
@@ -25,7 +25,7 @@ export function compare(revID1: string, revID2: string): void {
 const _cache: Record<string, Commit> = {};
 
 async function fetchRev(rev: Rev | undefined): Promise<Commit> {
-  if (!rev) {
+  if (rev == null) {
     return new Commit(
       {
         id: '0',
@@ -37,7 +37,7 @@ async function fetchRev(rev: Rev | undefined): Promise<Commit> {
         title: '',
         rawInfo: '',
         description: '',
-      },
+      }
     );
   }
 
