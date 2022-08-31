@@ -12,7 +12,7 @@ const output = {
 };
 
 metadata.require.push(
-  'file://' + path.resolve(__dirname, '../dist', output.filename)
+  'file://' + path.resolve(__dirname, '../dist', output.filename),
 );
 
 const cfg = merge(webpackConfig, {

@@ -9,16 +9,11 @@
     "email": "i@trim21.me"
   },
   "prettier": {
+    "trailingComma": "all",
     "singleQuote": true,
     "semi": true
   },
-  "browserslist": [
-    "chrome >= 86",
-    "last 2 edge versions",
-    "last 2 firefox versions"
-  ],
   "eslintIgnore": [
-    "!.babelrc.js",
     "dist/*.js"
   ],
   "scripts": {
@@ -27,8 +22,8 @@
     "lint:eslint": "eslint --ext cjs,js,ts ./",
     "lint:prettier": "prettier --check .",
     "lint:tsc": "tsc --noEmit",
-    "format:eslint": "eslint --fix --ext cjs,js,ts ./",
     "format:prettier": "prettier --write .",
+    "format:eslint": "eslint --fix --ext cjs,js,ts ./",
     "anylize": "npm_config_report=true webpack --config config/webpack.config.production.js",
     "postversion": "git push",
     "build": "webpack --config config/webpack.config.production.js",

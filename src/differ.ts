@@ -7,7 +7,7 @@ import { Commit } from './model';
 export function diff(
   revOld: Commit,
   revNew: Commit,
-  style: OutputFormatType
+  style: OutputFormatType,
 ): string {
   const options: PatchOptions = { context: 100 };
   if (style === 'line-by-line') {
@@ -30,7 +30,7 @@ function titleDiff(rev1: Commit, rev2: Commit, options: PatchOptions): string {
     rev2.details.title,
     rev1.rev.date,
     rev2.rev.date,
-    options
+    options,
   );
 }
 
@@ -44,14 +44,14 @@ function infoDiff(rev1: Commit, rev2: Commit, options: PatchOptions): string {
     rev2.details.rawInfo,
     rev1.rev.date,
     rev2.rev.date,
-    options
+    options,
   );
 }
 
 function descriptionDiff(
   rev1: Commit,
   rev2: Commit,
-  options: PatchOptions
+  options: PatchOptions,
 ): string {
   if (rev1.details.description === rev2.details.description) {
     return '';
@@ -62,6 +62,6 @@ function descriptionDiff(
     rev2.details.description,
     rev1.rev.date,
     rev2.rev.date,
-    options
+    options,
   );
 }
