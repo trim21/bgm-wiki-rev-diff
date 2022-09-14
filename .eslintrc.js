@@ -67,6 +67,7 @@ module.exports = {
         ],
         '@typescript-eslint/semi': ['error', 'always'],
         '@typescript-eslint/strict-boolean-expressions': 'off',
+        '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
         '@typescript-eslint/restrict-template-expressions': [
           'error',
           { allowAny: true },
