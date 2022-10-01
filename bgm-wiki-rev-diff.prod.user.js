@@ -2,7 +2,7 @@
 // @name         bgm-wiki-rev-diff
 // @name:zh      显示条目信息版本差异
 // @namespace    https://trim21.me/
-// @version      0.2.3
+// @version      0.2.4
 // @author       Trim21 <i@trim21.me>
 // @source       https://github.com/Trim21/bgm-wiki-rev-diff
 // @supportURL   https://github.com/Trim21/bgm-wiki-rev-diff/issues
@@ -11,10 +11,10 @@
 // @match        https://bangumi.tv/subject/*/edit*
 // @match        https://chii.in/subject/*/edit*
 // @require      https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js
-// @require      https://cdn.jsdelivr.net/npm/diff2html@3.4.18/bundles/js/diff2html.min.js
+// @require      https://cdn.jsdelivr.net/npm/diff2html@3.4.19/bundles/js/diff2html.min.js
 // @require      https://cdn.jsdelivr.net/npm/diff@5.1.0/dist/diff.min.js
 // @require      https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js
-// @resource     diff2html https://cdn.jsdelivr.net/npm/diff2html@3.4.18/bundles/css/diff2html.min.css
+// @resource     diff2html https://cdn.jsdelivr.net/npm/diff2html@3.4.19/bundles/css/diff2html.min.css
 // @grant        GM.getResourceUrl
 // @grant        GM.registerMenuCommand
 // @grant        GM.setValue
