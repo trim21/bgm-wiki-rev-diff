@@ -42,7 +42,9 @@ ul#pagehistory > li > * {
 async function initUI(): Promise<void> {
   GM.registerMenuCommand('切换diff视图', function () {
     void (async () => {
-      let outputFormat = await GM.getValue<OutputFormatType>(configKey);
+      let outputFormat = (await GM.getValue(configKey)) as
+        | OutputFormatType
+        | undefined;
       if (!outputFormat || outputFormat === 'side-by-side') {
         outputFormat = 'line-by-line';
       } else {
